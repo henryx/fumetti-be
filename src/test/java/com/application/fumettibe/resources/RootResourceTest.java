@@ -7,13 +7,12 @@ import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-
-import static org.junit.Assert.assertEquals;
 
 public class RootResourceTest {
 
@@ -43,6 +42,6 @@ public class RootResourceTest {
 
         String responseMsg = target.path("/").request(MediaType.APPLICATION_JSON_TYPE).get(String.class);
 
-        assertEquals(res.toString(), responseMsg);
+        JSONAssert.assertEquals(responseMsg, res, false);
     }
 }
