@@ -38,7 +38,7 @@ public class Main {
      * @return Grizzly HTTP server.
      */
     public static HttpServer startServer() {
-        final ResourceConfig rc = new ResourceConfig().packages("com.application.fumettibe");
+        final ResourceConfig rc = new ResourceConfig().packages("com.application.fumettibe.resources");
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
