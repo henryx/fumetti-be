@@ -2,18 +2,18 @@ package com.application.fumettibe.resources;
 
 import com.application.fumettibe.Main;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RootResourceTest {
 
@@ -36,11 +36,10 @@ public class RootResourceTest {
     }
 
     @Test
-    public void getJson() {
-        JsonObject res = Json.createObjectBuilder()
-                .add("msg", "Fumetti REST API")
-                .add("op", "ok")
-                .build();
+    public void getJson() throws JSONException {
+        JSONObject res = new JSONObject()
+                .put("msg", "Fumetti REST API")
+                .put("op", "ok");
 
         String responseMsg = target.path("/").request(MediaType.APPLICATION_JSON_TYPE).get(String.class);
 
