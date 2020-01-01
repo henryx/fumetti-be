@@ -60,11 +60,19 @@ public class AlbiResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postJson() {
-        JsonObject res = Json.createObjectBuilder()
-                .add("msg", "Not implemented")
-                .add("op", "ok")
-                .build();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postJson(JsonObject data) {
+        JsonObject res = null;
+
+        if (data.containsKey("type")) {
+            var val = data.getJsonString("type");
+
+            res = Json.createObjectBuilder()
+                    .add("msg", "POST request")
+                    .add("value", val.getString())
+                    .add("op", "ok")
+                    .build();
+        }
 
         return Response.ok(res).build();
     }
