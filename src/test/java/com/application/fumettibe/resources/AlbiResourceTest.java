@@ -82,19 +82,20 @@ public class AlbiResourceTest {
     @Test
     public void postJson() throws JSONException {
         JSONObject res = new JSONObject()
-                .put("msg", "Not implemented")
+                .put("msg", "POST request")
+                .put("value", "test")
                 .put("op", "ok");
 
-        JSONObject req = new JSONObject().put("source", "value");
+        JSONObject req = new JSONObject().put("type", "test");
 
-        String responseMsg = target.request().post(Entity.entity(req, MediaType.APPLICATION_JSON_TYPE)).readEntity(String.class);
+        String responseMsg = target.request().post(Entity.entity(req.toString(), MediaType.APPLICATION_JSON_TYPE)).readEntity(String.class);
 
-        assertEquals(res.toString(), responseMsg);
+        JSONAssert.assertEquals(responseMsg, res, false);
     }
 
     @Test
     public void delJSon() throws JSONException {
-        String serie = "Berserk";
+        String serie = "test";
 
         JSONObject res = new JSONObject()
                 .put("msg", "Not implemented")
