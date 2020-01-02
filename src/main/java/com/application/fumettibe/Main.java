@@ -56,6 +56,8 @@ public class Main {
         rc.register(new LoggingFeature(Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME),
                 Level.INFO, LoggingFeature.Verbosity.HEADERS_ONLY, 100));
 
+        rc.register(NotFoundExceptionHandler.class);
+
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
