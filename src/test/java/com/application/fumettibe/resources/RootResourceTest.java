@@ -23,8 +23,11 @@ public class RootResourceTest {
 
     @Before
     public void setUp() {
+        Main m = new Main();
+
         // start the server
-        server = Main.startServer();
+        server = m.startServer();
+
         // create the client
         Client c = ClientBuilder.newClient();
 

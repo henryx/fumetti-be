@@ -43,7 +43,7 @@ public class Main {
      *
      * @return Grizzly HTTP server.
      */
-    public static HttpServer startServer() {
+    public HttpServer startServer() {
         final ResourceConfig rc = new ResourceConfig().packages("com.application.fumettibe.resources");
 
         Map<String, Object> properties = new HashMap<>();
@@ -69,7 +69,11 @@ public class Main {
      * @throws InterruptedException
      */
     public static void main(String[] args) throws IOException, InterruptedException {
-        final HttpServer server = startServer();
+        final HttpServer server;
+
+        Main m = new Main();
+        server = m.startServer();
+
         System.out.println(String.format("Jersey app started at %s", BASE_URI));
 
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
