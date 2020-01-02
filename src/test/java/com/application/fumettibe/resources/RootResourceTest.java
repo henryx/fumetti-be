@@ -1,7 +1,7 @@
 package com.application.fumettibe.resources;
 
 import com.application.fumettibe.Main;
-import org.glassfish.grizzly.http.server.HttpServer;
+import org.eclipse.jetty.server.Server;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -18,13 +18,16 @@ import javax.ws.rs.core.MediaType;
 
 public class RootResourceTest {
 
-    private HttpServer server;
+    private Server server;
     private WebTarget target;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         // start the server
         server = Main.startServer();
+        server.setStopAtShutdown(true);
+        server.start();
+
         // create the client
         Client c = ClientBuilder.newClient();
 
@@ -32,8 +35,8 @@ public class RootResourceTest {
     }
 
     @After
-    public void tearDown() {
-        server.shutdownNow();
+    public void tearDown() throws Exception {
+        server.stop();
     }
 
     @Test
