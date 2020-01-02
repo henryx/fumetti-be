@@ -19,11 +19,17 @@
 package com.application.fumettibe;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.CommonProperties;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Main class.
@@ -39,6 +45,16 @@ public class Main {
      */
     public static HttpServer startServer() {
         final ResourceConfig rc = new ResourceConfig().packages("com.application.fumettibe.resources");
+
+        Map<String, Object> properties = new HashMap<>();
+
+        properties.put("jersey.config.server.wadl.disableWadl", "true");
+        properties.put("jersey.config.server.provider.classnames", "org.glassfish.jersey.media.multipart.MultiPartFeature");
+        properties.put(CommonProperties.OUTBOUND_CONTENT_LENGTH_BUFFER, "0");
+
+        rc.setProperties(properties);
+        rc.register(new LoggingFeature(Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME),
+                Level.INFO, LoggingFeature.Verbosity.HEADERS_ONLY, 100));
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
