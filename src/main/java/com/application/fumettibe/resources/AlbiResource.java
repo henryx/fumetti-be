@@ -65,13 +65,14 @@ public class AlbiResource {
         JsonObject res = null;
 
         if (data.containsKey("type")) {
-            var val = data.getJsonString("type");
-
-            res = Json.createObjectBuilder()
-                    .add("msg", "POST request")
-                    .add("value", val.getString())
-                    .add("op", "ok")
-                    .build();
+            String val = data.getJsonString("type").getString();
+            if (val.equals("test")) {
+                res = Json.createObjectBuilder()
+                        .add("msg", "POST request")
+                        .add("value", val)
+                        .add("op", "ok")
+                        .build();
+            }
         }
 
         return Response.ok(res).build();
