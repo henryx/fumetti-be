@@ -18,13 +18,18 @@
 
 package com.application.fumettibe;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.eclipse.jetty.plus.jndi.Resource;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-
-import java.io.IOException;
+import javax.naming.NamingException;
 
 /**
  * Main class.
@@ -33,12 +38,22 @@ public class Main {
     // TODO: make URI configurable
     public static final String BASE_URI = "http://localhost:8080/";
 
+    private BasicDataSource setDatasource() {
+        BasicDataSource bds = new BasicDataSource();
+        bds.setDriverClassName("org.postgresql.Driver");
+        bds.setUrl(String.format("jdbc:postgresql://%s:%s/%s", "localhost", 5432, "testdb"));
+        bds.setUsername("root");
+        bds.setPassword("password");
+
+        return bds;
+    }
+
     /**
-     * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
+     * Starts Jetty HTTP server exposing JAX-RS resources defined in this application.
      *
-     * @return Grizzly HTTP server.
+     * @return Jetty HTTP server.
      */
-    public Server startServer() {
+    public Server startServer() throws NamingException {
         Server server = new Server(8080);
         ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 
@@ -49,6 +64,20 @@ public class Main {
         serHol.setInitOrder(1);
         serHol.setInitParameter("jersey.config.server.provider.packages", "com.application.fumettibe");
 
+        ResourceHandler resourceHandler = new ResourceHandler();
+        /* // Useful for future implementations
+        resourceHandler.setDirectoriesListed(true);
+        resourceHandler.setWelcomeFiles(new String[]{"index.html"});
+         */
+
+        resourceHandler.setResourceBase("/Users/pivotal/workspace/jersey-jetty-jndi-example/src/main/webapp");
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[]{resourceHandler, ctx , new DefaultHandler()});
+        server.setHandler(handlers);
+
+        new Resource("jdbc/fumettidb", setDatasource());
+
         return server;
     }
 
@@ -56,10 +85,8 @@ public class Main {
      * Main method.
      *
      * @param args Arguments passed at startup
-     * @throws IOException
-     * @throws InterruptedException
      */
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws NamingException {
         final Server server;
         Main m = new Main();
         server = m.startServer();
