@@ -18,7 +18,7 @@
 package com.application.fumettibe.resources;
 
 import com.application.fumettibe.Main;
-import org.glassfish.grizzly.http.server.HttpServer;
+import org.eclipse.jetty.server.Server;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -36,7 +36,7 @@ import static org.junit.Assert.assertEquals;
 
 public class AlbiResourceTest {
 
-    private HttpServer server;
+    private Server server;
     private WebTarget target;
 
     @Before
@@ -45,6 +45,9 @@ public class AlbiResourceTest {
 
         // start the server
         server = m.startServer();
+        server.setStopAtShutdown(true);
+        server.start();
+
         // create the client
         Client c = ClientBuilder.newClient();
 
@@ -53,7 +56,7 @@ public class AlbiResourceTest {
 
     @After
     public void tearDown() throws Exception {
-        server.shutdownNow();
+        server.stop();
     }
 
     @Test

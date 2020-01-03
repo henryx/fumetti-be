@@ -18,18 +18,13 @@
 
 package com.application.fumettibe;
 
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.CommonProperties;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.logging.LoggingFeature;
-import org.glassfish.jersey.server.ResourceConfig;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.servlet.ServletContainer;
+
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Main class.
@@ -43,22 +38,18 @@ public class Main {
      *
      * @return Grizzly HTTP server.
      */
-    public HttpServer startServer() {
-        final ResourceConfig rc = new ResourceConfig().packages("com.application.fumettibe.resources");
+    public Server startServer() {
+        Server server = new Server(8080);
+        ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 
-        Map<String, Object> properties = new HashMap<>();
+        ctx.setContextPath("/");
+        server.setHandler(ctx);
 
-        properties.put("jersey.config.server.wadl.disableWadl", "true");
-        properties.put("jersey.config.server.provider.classnames", "org.glassfish.jersey.media.multipart.MultiPartFeature");
-        properties.put(CommonProperties.OUTBOUND_CONTENT_LENGTH_BUFFER, "0");
+        ServletHolder serHol = ctx.addServlet(ServletContainer.class, "/*");
+        serHol.setInitOrder(1);
+        serHol.setInitParameter("jersey.config.server.provider.packages", "com.application.fumettibe");
 
-        rc.setProperties(properties);
-        rc.register(new LoggingFeature(Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME),
-                Level.INFO, LoggingFeature.Verbosity.HEADERS_ONLY, 100));
-
-        rc.register(NotFoundExceptionHandler.class);
-
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return server;
     }
 
     /**
@@ -69,22 +60,20 @@ public class Main {
      * @throws InterruptedException
      */
     public static void main(String[] args) throws IOException, InterruptedException {
-        final HttpServer server;
-
+        final Server server;
         Main m = new Main();
         server = m.startServer();
 
-        System.out.println(String.format("Jersey app started at %s", BASE_URI));
+        System.out.println(String.format("Jetty app started at %s", BASE_URI));
 
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                server.shutdownNow();
-            }
-        }, "shutdownHook"));
-
-        server.start();
-        Thread.currentThread().join();
+        try {
+            server.start();
+            server.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            server.destroy();
+        }
     }
 }
 
