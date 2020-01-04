@@ -30,13 +30,23 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import javax.naming.NamingException;
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Main class.
  */
 public class Main {
-    // TODO: make URI configurable
-    public static final String BASE_URI = "http://localhost:8080/";
+    private URI uri;
+
+    public Main() {
+        try {
+            this.setUri("localhost", 8080);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 
     private BasicDataSource setDatasource() {
         BasicDataSource bds = new BasicDataSource();
@@ -48,13 +58,21 @@ public class Main {
         return bds;
     }
 
+    private void setUri(String host, int port) throws URISyntaxException {
+        this.uri = new URI("http", null, host, port, null, null, null);
+    }
+
+    public String toUrl() {
+        return this.uri.toString();
+    }
+
     /**
      * Starts Jetty HTTP server exposing JAX-RS resources defined in this application.
      *
      * @return Jetty HTTP server.
      */
     public Server startServer() throws NamingException {
-        Server server = new Server(8080);
+        Server server = new Server(new InetSocketAddress(this.uri.getHost(), this.uri.getPort()));
         ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 
         ctx.setContextPath("/");
@@ -73,7 +91,7 @@ public class Main {
         resourceHandler.setResourceBase("/Users/pivotal/workspace/jersey-jetty-jndi-example/src/main/webapp");
 
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{resourceHandler, ctx , new DefaultHandler()});
+        handlers.setHandlers(new Handler[]{resourceHandler, ctx, new DefaultHandler()});
         server.setHandler(handlers);
 
         new Resource("jdbc/fumettidb", setDatasource());
@@ -91,7 +109,7 @@ public class Main {
         Main m = new Main();
         server = m.startServer();
 
-        System.out.println(String.format("Jetty app started at %s", BASE_URI));
+        System.out.println(String.format("Jetty app started at %s", m.toUrl()));
 
         try {
             server.start();
