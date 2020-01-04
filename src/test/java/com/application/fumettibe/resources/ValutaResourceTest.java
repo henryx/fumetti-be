@@ -53,7 +53,7 @@ public class ValutaResourceTest {
         // create the client
         Client c = ClientBuilder.newClient();
 
-        target = c.target(Main.BASE_URI);
+        target = c.target(m.toUrl());
     }
 
     @After

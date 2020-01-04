@@ -51,7 +51,7 @@ public class AlbiResourceTest {
         // create the client
         Client c = ClientBuilder.newClient();
 
-        target = c.target(Main.BASE_URI).path("albi");
+        target = c.target(m.toUrl()).path("albi");
     }
 
     @After
