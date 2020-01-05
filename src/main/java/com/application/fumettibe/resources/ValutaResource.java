@@ -20,51 +20,11 @@ package com.application.fumettibe.resources;
 
 import com.application.fumettibe.db.resources.lookups.DbValuta;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.naming.NamingException;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 @Path("/valuta")
-public class ValutaResource {
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getJson() {
-        Response res;
-        ArrayList<JsonObject> results;
-
-        try (DbValuta valuta = new DbValuta()) {
-            results = valuta.select();
-            res = Response.ok(results).build();
-        } catch (SQLException e) {
-            JsonObject resp = Json.createObjectBuilder()
-                    .add("msg", "Database connection error")
-                    .add("op", "ko")
-                    .add("value", e.getMessage())
-                    .build();
-            res = Response.status(500).entity(resp).build();
-        } catch (NamingException e) {
-            JsonObject resp = Json.createObjectBuilder()
-                    .add("msg", "Database initialization error")
-                    .add("op", "ko")
-                    .add("value", e.getMessage())
-                    .build();
-            res = Response.status(500).entity(resp).build();
-        } catch (Exception e) {
-            JsonObject resp = Json.createObjectBuilder()
-                    .add("msg", "Generic error")
-                    .add("op", "ko")
-                    .add("value", e.getMessage())
-                    .build();
-            res = Response.status(500).entity(resp).build();
-        }
-        return res;
+public class ValutaResource extends LookupResource {
+    public ValutaResource() {
+        super(new DbValuta());
     }
 }
