@@ -34,6 +34,8 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class ValutaResourceTest {
@@ -67,7 +69,7 @@ public class ValutaResourceTest {
         var invoke = builder.buildGet().invoke();
 
         var status = invoke.getStatus();
-        var responseMsg = invoke.readEntity(JSONObject.class);
+        var responseMsg = invoke.readEntity(ArrayList.class);
 
         Assert.assertEquals(200, status);
     }
