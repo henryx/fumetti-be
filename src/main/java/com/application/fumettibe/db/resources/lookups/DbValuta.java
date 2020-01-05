@@ -20,12 +20,8 @@ package com.application.fumettibe.db.resources.lookups;
 
 import com.application.fumettibe.db.Lookup;
 
-import javax.naming.NamingException;
-import java.sql.SQLException;
-
 public class DbValuta extends Lookup {
-
-    public DbValuta() throws NamingException, SQLException {
+    public DbValuta() {
         super();
         query = "SELECT id_valuta, simbolo FROM valuta";
     }

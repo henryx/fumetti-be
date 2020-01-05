@@ -30,11 +30,7 @@ import java.util.ArrayList;
 public abstract class Database implements AutoCloseable{
     protected Connection conn;
 
-    public Database() throws NamingException, SQLException {
-        InitialContext ic2 = new InitialContext();
-        DataSource ds = (DataSource) ic2.lookup("jdbc/fumettidb");
-
-        this.conn = ds.getConnection();
+    public Database() {
     }
 
     @Override
@@ -44,7 +40,13 @@ public abstract class Database implements AutoCloseable{
         }
     }
 
-    public abstract void insert(JsonObject data) throws SQLException, ParseException;
-    public abstract ArrayList<JsonObject> select() throws SQLException;
+    protected void prepare() throws NamingException, SQLException {
+        InitialContext ic2 = new InitialContext();
+        DataSource ds = (DataSource) ic2.lookup("jdbc/fumettidb");
 
+        this.conn = ds.getConnection();
+    }
+
+    public abstract void insert(JsonObject data) throws SQLException, ParseException, NamingException;
+    public abstract ArrayList<JsonObject> select() throws SQLException, NamingException;
 }

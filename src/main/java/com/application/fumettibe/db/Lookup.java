@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public abstract class Lookup extends Database {
     protected String query;
 
-    public Lookup() throws NamingException, SQLException {
+    public Lookup() {
     }
 
     @Override
@@ -20,8 +20,10 @@ public abstract class Lookup extends Database {
         // Not implemented
     }
 
-    public ArrayList<JsonObject> select() throws SQLException {
+    public ArrayList<JsonObject> select() throws NamingException, SQLException {
         ArrayList<JsonObject> values;
+
+        prepare();
 
         values = new ArrayList<>();
         try (Statement stmt = conn.createStatement();
