@@ -24,6 +24,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public abstract class Database implements AutoCloseable{
@@ -43,6 +44,7 @@ public abstract class Database implements AutoCloseable{
         }
     }
 
+    public abstract void insert(JsonObject data) throws SQLException, ParseException;
     public abstract ArrayList<JsonObject> select() throws SQLException;
 
 }

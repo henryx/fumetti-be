@@ -26,12 +26,18 @@ import javax.naming.NamingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class DbValuta extends Database {
 
     public DbValuta() throws NamingException, SQLException {
         super();
+    }
+
+    @Override
+    public void insert(JsonObject data) throws SQLException, ParseException {
+        // Not implemented
     }
 
     public ArrayList<JsonObject> select() throws SQLException {
@@ -41,12 +47,14 @@ public class DbValuta extends Database {
         values = new ArrayList<>();
         try (Statement stmt = conn.createStatement();
              ResultSet res = stmt.executeQuery(query)) {
-            JsonObject data = Json.createObjectBuilder()
-                    .add("id", res.getInt("id_valuta"))
-                    .add("name", res.getString("simbolo"))
-                    .build();
+            while (res.next()) {
+                JsonObject data = Json.createObjectBuilder()
+                        .add("id", res.getInt(1))
+                        .add("name", res.getString(2))
+                        .build();
 
-            values.add(data);
+                values.add(data);
+            }
         }
         return values;
     }
