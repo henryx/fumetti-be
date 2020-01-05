@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package com.application.fumettibe.db.resources;
+package com.application.fumettibe.db.resources.lookups;
 
 import com.application.fumettibe.db.Database;
 

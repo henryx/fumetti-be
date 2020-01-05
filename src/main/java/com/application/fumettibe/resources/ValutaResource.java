@@ -18,7 +18,7 @@
 
 package com.application.fumettibe.resources;
 
-import com.application.fumettibe.db.resources.DbValuta;
+import com.application.fumettibe.db.resources.lookups.DbValuta;
 
 import javax.json.Json;
 import javax.json.JsonObject;
