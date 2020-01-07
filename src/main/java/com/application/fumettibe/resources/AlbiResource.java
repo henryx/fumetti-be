@@ -17,13 +17,17 @@
  */
 package com.application.fumettibe.resources;
 
+import com.application.fumettibe.db.resources.DbAlbi;
+
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.sql.SQLException;
 
 @Path("/albi")
 public class AlbiResource {
@@ -62,20 +66,52 @@ public class AlbiResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response postJson(JsonObject data) {
-        JsonObject res = null;
+        JsonObject msg;
+        Response resp;
 
         if (data.containsKey("type")) {
             String val = data.getJsonString("type").getString();
             if (val.equals("test")) {
-                res = Json.createObjectBuilder()
+                msg = Json.createObjectBuilder()
                         .add("msg", "POST request")
                         .add("value", val)
                         .add("op", "ok")
                         .build();
+                resp = Response.ok(msg).build();
             }
         }
 
-        return Response.ok(res).build();
+        try(DbAlbi db = new DbAlbi()) {
+            db.insert(data);
+            msg = Json.createObjectBuilder()
+                    .add("op", "ok")
+                    .add("msg", "Albo inserted")
+                    .build();
+            resp = Response.ok(msg).build();
+        } catch (SQLException e) {
+            msg = Json.createObjectBuilder()
+                    .add("msg", "Cannot insert albo")
+                    .add("op", "ko")
+                    .add("motivation", e.getMessage())
+                    .build();
+            resp = Response.status(500).entity(msg).build();
+        } catch (NamingException e) {
+            msg = Json.createObjectBuilder()
+                    .add("msg", "Database initialization error")
+                    .add("op", "ko")
+                    .add("motivation", e.getMessage())
+                    .build();
+            resp = Response.status(500).entity(msg).build();
+        } catch (Exception e) {
+            msg = Json.createObjectBuilder()
+                    .add("msg", "Generic error")
+                    .add("op", "ko")
+                    .add("motivation", e.getMessage())
+                    .build();
+            resp = Response.status(500).entity(msg).build();
+        }
+
+        return resp;
     }
 
     @DELETE
