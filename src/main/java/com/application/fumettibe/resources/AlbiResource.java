@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 @Path("/albi")
 public class AlbiResource {
@@ -81,34 +82,33 @@ public class AlbiResource {
             }
         }
 
-        try(DbAlbi db = new DbAlbi()) {
+        try (DbAlbi db = new DbAlbi()) {
             db.insert(data);
             msg = Json.createObjectBuilder()
                     .add("op", "ok")
                     .add("msg", "Albo inserted")
                     .build();
             resp = Response.ok(msg).build();
-        } catch (SQLException e) {
-            msg = Json.createObjectBuilder()
-                    .add("msg", "Cannot insert albo")
-                    .add("op", "ko")
-                    .add("motivation", e.getMessage())
-                    .build();
-            resp = Response.status(500).entity(msg).build();
-        } catch (NamingException e) {
-            msg = Json.createObjectBuilder()
-                    .add("msg", "Database initialization error")
-                    .add("op", "ko")
-                    .add("motivation", e.getMessage())
-                    .build();
-            resp = Response.status(500).entity(msg).build();
         } catch (Exception e) {
+            String strmsg;
+
+            if (e instanceof NamingException) {
+                strmsg = "Database initialization error";
+            } else if (e instanceof SQLException) {
+                strmsg = "Cannot insert albo";
+            } else if (e instanceof ParseException) {
+                strmsg = "Parsed data error";
+            } else {
+                strmsg = "Generic error";
+            }
+
             msg = Json.createObjectBuilder()
-                    .add("msg", "Generic error")
+                    .add("msg", strmsg)
                     .add("op", "ko")
                     .add("motivation", e.getMessage())
                     .build();
-            resp = Response.status(500).entity(msg).build();
+
+            resp = Response.status(400).entity(msg).build();
         }
 
         return resp;
