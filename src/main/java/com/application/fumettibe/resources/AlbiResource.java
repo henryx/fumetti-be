@@ -79,6 +79,7 @@ public class AlbiResource {
                         .add("op", "ok")
                         .build();
                 resp = Response.ok(msg).build();
+                return resp;
             }
         }
 
