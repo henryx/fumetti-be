@@ -33,6 +33,7 @@ import javax.naming.NamingException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 /**
  * Main class.
@@ -48,12 +49,18 @@ public class Main {
         }
     }
 
-    private BasicDataSource setDatasource() {
+    private BasicDataSource setDatasource() throws NoSuchFieldException {
         BasicDataSource bds = new BasicDataSource();
+        var host = Optional.ofNullable(System.getenv("FUMETTI_HOST")).orElse("localhost");
+        var port = Optional.ofNullable(System.getenv("FUMETTI_PORT")).orElse("5432");
+        var db = Optional.ofNullable(System.getenv("FUMETTI_DATABASE")).orElse("fumetti");
+        var user = Optional.ofNullable(System.getenv("FUMETTI_USER")).orElseThrow(() -> new NoSuchFieldException("Cannot retrieve username"));
+        var password = Optional.ofNullable(System.getenv("FUMETTI_PASSWORD")).orElseThrow(() -> new NoSuchFieldException("Cannot retrieve password"));
+
         bds.setDriverClassName("org.postgresql.Driver");
-        bds.setUrl(String.format("jdbc:postgresql://%s:%s/%s", "localhost", 5432, "testdb"));
-        bds.setUsername("root");
-        bds.setPassword("password");
+        bds.setUrl(String.format("jdbc:postgresql://%s:%s/%s", host, port, db));
+        bds.setUsername(user);
+        bds.setPassword(password);
 
         return bds;
     }
@@ -71,7 +78,7 @@ public class Main {
      *
      * @return Jetty HTTP server.
      */
-    public Server startServer() throws NamingException {
+    public Server startServer() throws NamingException, NoSuchFieldException {
         Server server = new Server(new InetSocketAddress(this.uri.getHost(), this.uri.getPort()));
         ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 
@@ -104,7 +111,7 @@ public class Main {
      *
      * @param args Arguments passed at startup
      */
-    public static void main(String[] args) throws NamingException {
+    public static void main(String[] args) throws NamingException, NoSuchFieldException {
         final Server server;
         Main m = new Main();
         server = m.startServer();
