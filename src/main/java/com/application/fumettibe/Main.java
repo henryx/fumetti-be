@@ -93,9 +93,8 @@ public class Main {
         /* // Useful for future implementations
         resourceHandler.setDirectoriesListed(true);
         resourceHandler.setWelcomeFiles(new String[]{"index.html"});
+        resourceHandler.setResourceBase("./static/");
          */
-
-        resourceHandler.setResourceBase("/Users/pivotal/workspace/jersey-jetty-jndi-example/src/main/webapp");
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resourceHandler, ctx, new DefaultHandler()});
