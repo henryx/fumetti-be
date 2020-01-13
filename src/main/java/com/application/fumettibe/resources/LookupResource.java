@@ -28,6 +28,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public abstract class LookupResource {
@@ -46,27 +47,27 @@ public abstract class LookupResource {
         try (lookup) {
             results = lookup.select();
             res = Response.ok(results).build();
-        } catch (SQLException e) {
-            JsonObject resp = Json.createObjectBuilder()
-                    .add("msg", "Database connection error")
-                    .add("op", "ko")
-                    .add("value", e.getMessage())
-                    .build();
-            res = Response.status(500).entity(resp).build();
-        } catch (NamingException e) {
-            JsonObject resp = Json.createObjectBuilder()
-                    .add("msg", "Database initialization error")
-                    .add("op", "ko")
-                    .add("value", e.getMessage())
-                    .build();
-            res = Response.status(500).entity(resp).build();
         } catch (Exception e) {
-            JsonObject resp = Json.createObjectBuilder()
-                    .add("msg", "Generic error")
+            String strmsg;
+            JsonObject msg;
+
+            if (e instanceof NamingException) {
+                strmsg = "Database initialization error";
+            } else if (e instanceof SQLException) {
+                strmsg = "Database connection";
+            } else if (e instanceof ParseException) {
+                strmsg = "Parsed data error";
+            } else {
+                strmsg = "Generic error";
+            }
+
+            msg = Json.createObjectBuilder()
+                    .add("msg", strmsg)
                     .add("op", "ko")
-                    .add("value", e.getMessage())
+                    .add("motivation", e.getMessage())
                     .build();
-            res = Response.status(500).entity(resp).build();
+
+            res = Response.status(400).entity(msg).build();
         }
         return res;
     }
