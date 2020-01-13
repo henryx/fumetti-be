@@ -87,7 +87,7 @@ public class Main {
 
         ServletHolder serHol = ctx.addServlet(ServletContainer.class, "/*");
         serHol.setInitOrder(1);
-        serHol.setInitParameter("jersey.config.server.provider.packages", "com.application.fumettibe");
+        serHol.setInitParameter("jersey.config.server.provider.packages", "com.application.fumettibe.resources");
 
         ResourceHandler resourceHandler = new ResourceHandler();
         /* // Useful for future implementations
