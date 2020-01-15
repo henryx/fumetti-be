@@ -20,7 +20,10 @@ package com.application.fumettibe.resources;
 
 import com.application.fumettibe.Main;
 import org.eclipse.jetty.server.Server;
+import org.hamcrest.CoreMatchers;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +35,8 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
 public class ValutaResourceTest {
 
@@ -64,8 +69,18 @@ public class ValutaResourceTest {
         var invoke = builder.buildGet().invoke();
 
         var status = invoke.getStatus();
-        var responseMsg = invoke.readEntity(ArrayList.class);
 
-        Assert.assertEquals(200, status);
+        Assert.assertThat(Arrays.asList(200, 400), CoreMatchers.hasItem(status));
+
+        if (status == 200) {
+            var responseMsg = invoke.readEntity(ArrayList.class);
+            var responseJson = new JSONArray(responseMsg);
+            Assert.assertThat(responseJson, CoreMatchers.isA(JSONArray.class));
+        } else {
+            var responseMsg = new JSONObject(invoke.readEntity(String.class));
+            Assert.assertTrue(responseMsg.has("op"));
+            Assert.assertTrue(responseMsg.has("motivation"));
+            Assert.assertTrue(responseMsg.has("msg"));
+        }
     }
 }
