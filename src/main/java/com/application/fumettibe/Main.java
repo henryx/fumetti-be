@@ -27,6 +27,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import javax.naming.NamingException;
@@ -85,9 +86,14 @@ public class Main {
         ctx.setContextPath("/");
         server.setHandler(ctx);
 
-        ServletHolder serHol = ctx.addServlet(ServletContainer.class, "/*");
-        serHol.setInitOrder(1);
-        serHol.setInitParameter("jersey.config.server.provider.packages", "com.application.fumettibe.resources");
+        ResourceConfig cfg = new ResourceConfig();
+        ServletContainer container = new ServletContainer(cfg);
+
+        ServletHolder holder = new ServletHolder(container);
+        ctx.addServlet(holder, "/*");
+
+        cfg.packages("com.application.fumettibe.resources");
+        cfg.register(CorsFilter.class, 1);
 
         ResourceHandler resourceHandler = new ResourceHandler();
         /* // Useful for future implementations
