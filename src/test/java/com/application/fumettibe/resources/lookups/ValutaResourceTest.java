@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package com.application.fumettibe.resources;
+package com.application.fumettibe.resources.lookups;
 
 import com.application.fumettibe.Main;
 import org.eclipse.jetty.server.Server;
