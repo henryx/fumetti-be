@@ -15,6 +15,7 @@ public abstract class Lookup extends Database {
     protected String query;
 
     public Lookup() {
+        super();
     }
 
     @Override
