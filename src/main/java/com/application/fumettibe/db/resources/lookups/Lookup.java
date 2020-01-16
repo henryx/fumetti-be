@@ -1,4 +1,6 @@
-package com.application.fumettibe.db;
+package com.application.fumettibe.db.resources.lookups;
+
+import com.application.fumettibe.db.Database;
 
 import javax.json.Json;
 import javax.json.JsonObject;

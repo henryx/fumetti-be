@@ -18,8 +18,6 @@
 
 package com.application.fumettibe.db.resources.lookups;
 
-import com.application.fumettibe.db.Lookup;
-
 public class DbRilegatura extends Lookup {
     public DbRilegatura() {
         super();
