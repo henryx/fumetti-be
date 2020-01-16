@@ -16,15 +16,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package com.application.fumettibe.resources;
+package com.application.fumettibe.resources.lookups;
 
-import com.application.fumettibe.db.resources.lookups.DbRilegatura;
+import com.application.fumettibe.db.resources.lookups.DbValuta;
 
 import javax.ws.rs.Path;
 
-@Path("/rilegatura")
-public class RilegaturaResource extends LookupResource {
-   public RilegaturaResource() {
-       super(new DbRilegatura());
-   }
+@Path("/valuta")
+public class ValutaResource extends LookupResource {
+    public ValutaResource() {
+        super(new DbValuta());
+    }
 }
