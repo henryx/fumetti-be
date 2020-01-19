@@ -24,7 +24,7 @@ import javax.ws.rs.Path;
 
 @Path("/status_serie")
 public class StatusSerieResource extends LookupResource {
-   public StatusSerieResource() {
-       super(new DbStatusSerie());
-   }
+    public StatusSerieResource() {
+        super(new DbStatusSerie());
+    }
 }

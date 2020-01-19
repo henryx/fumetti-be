@@ -3,7 +3,6 @@ package com.application.fumettibe.resources;
 import com.application.fumettibe.Main;
 import org.eclipse.jetty.server.Server;
 import org.hamcrest.CoreMatchers;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -16,10 +15,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.Arrays;
-
-import static org.junit.Assert.*;
 
 public class CollaneResourceTest {
 

@@ -24,7 +24,7 @@ import javax.ws.rs.Path;
 
 @Path("/rilegatura")
 public class RilegaturaResource extends LookupResource {
-   public RilegaturaResource() {
-       super(new DbRilegatura());
-   }
+    public RilegaturaResource() {
+        super(new DbRilegatura());
+    }
 }

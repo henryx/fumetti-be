@@ -30,7 +30,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 
 public abstract class LookupResource {
     protected final Lookup lookup;

@@ -24,7 +24,7 @@ import javax.ws.rs.Path;
 
 @Path("/conservazione")
 public class ConservazioneResource extends LookupResource {
-   public ConservazioneResource() {
-       super(new DbConservazione());
-   }
+    public ConservazioneResource() {
+        super(new DbConservazione());
+    }
 }
