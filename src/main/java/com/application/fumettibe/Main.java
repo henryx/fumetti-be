@@ -20,6 +20,8 @@ package com.application.fumettibe;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.eclipse.jetty.plus.jndi.Resource;
+import org.eclipse.jetty.server.AsyncRequestLogWriter;
+import org.eclipse.jetty.server.CustomRequestLog;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
@@ -85,6 +87,7 @@ public class Main {
     public Server startServer() throws NamingException, NoSuchFieldException {
         Server server = new Server(new InetSocketAddress(this.uri.getHost(), this.uri.getPort()));
         ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        CustomRequestLog logger = new CustomRequestLog(new AsyncRequestLogWriter(), CustomRequestLog.NCSA_FORMAT);
 
         ctx.setContextPath("/");
         server.setHandler(ctx);
@@ -108,6 +111,7 @@ public class Main {
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resourceHandler, ctx, new DefaultHandler()});
         server.setHandler(handlers);
+        server.setRequestLog(logger);
 
         new Resource("jdbc/fumettidb", setDatasource());
 
