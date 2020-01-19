@@ -1,14 +1,13 @@
 package com.application.fumettibe.resources;
 
+import com.application.fumettibe.db.resources.DbAlbi;
 import com.application.fumettibe.db.resources.DbSerie;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -64,4 +63,57 @@ public class SerieResource {
         }
         return res;
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postJson(JsonObject data) {
+        JsonObject msg;
+        Response resp;
+
+        if (data.containsKey("type")) {
+            String val = data.getJsonString("type").getString();
+            if (val.equals("test")) {
+                msg = Json.createObjectBuilder()
+                        .add("msg", "POST request")
+                        .add("value", val)
+                        .add("op", "ok")
+                        .build();
+                resp = Response.ok(msg).build();
+                return resp;
+            }
+        }
+
+        try (DbSerie db = new DbSerie()) {
+            db.insert(data);
+            msg = Json.createObjectBuilder()
+                    .add("op", "ok")
+                    .add("msg", "Albo inserted")
+                    .build();
+            resp = Response.ok(msg).build();
+        } catch (Exception e) {
+            String strmsg;
+
+            if (e instanceof NamingException) {
+                strmsg = "Database initialization error";
+            } else if (e instanceof SQLException) {
+                strmsg = "Cannot insert serie";
+            } else if (e instanceof ParseException) {
+                strmsg = "Parsed data error";
+            } else {
+                strmsg = "Generic error";
+            }
+
+            msg = Json.createObjectBuilder()
+                    .add("msg", strmsg)
+                    .add("op", "ko")
+                    .add("motivation", e.getMessage())
+                    .build();
+
+            resp = Response.status(400).entity(msg).build();
+        }
+
+        return resp;
+    }
+
 }

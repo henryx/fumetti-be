@@ -9,11 +9,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
 
@@ -60,5 +58,23 @@ public class SerieResourceTest {
             Assert.assertTrue(responseMsg.has("motivation"));
             Assert.assertTrue(responseMsg.has("msg"));
         }
+    }
+
+    @Test
+    public void postJson() throws JSONException {
+        JSONObject res = new JSONObject()
+                .put("msg", "POST request")
+                .put("value", "test")
+                .put("op", "ok");
+
+        JSONObject req = new JSONObject().put("type", "test");
+
+        String responseMsg = target
+                .path("/serie")
+                .request()
+                .post(Entity.entity(req.toString(),
+                        MediaType.APPLICATION_JSON_TYPE)).readEntity(String.class);
+
+        JSONAssert.assertEquals(responseMsg, res, false);
     }
 }

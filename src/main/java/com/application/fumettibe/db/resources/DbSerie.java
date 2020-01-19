@@ -25,6 +25,7 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,6 +38,20 @@ public class DbSerie extends Database {
 
     @Override
     public void insert(JsonObject data) throws NamingException, SQLException, ParseException {
+        String query = "INSERT INTO serie(nome, id_collana, id_status_serie, id_periodicita, id_genere_serie, note) VALUES(?, ?, ?, ?, ?, ?)";
+
+        prepare();
+
+        try(PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, data.getString("name"));
+            pstmt.setInt(2, data.getInt("collana"));
+            pstmt.setInt(3, data.getInt("status_serie"));
+            pstmt.setInt(4, data.getInt("periodicita"));
+            pstmt.setInt(5, data.getInt("genere"));
+            pstmt.setString(6, data.getString("note"));
+
+            pstmt.executeUpdate();
+        }
     }
 
     @Override
