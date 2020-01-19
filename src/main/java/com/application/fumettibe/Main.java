@@ -43,9 +43,12 @@ public class Main {
     private URI uri;
 
     public Main() {
+        var host = Optional.ofNullable(System.getenv("FUMETTI_HOST")).orElse("localhost");
+        var port = Optional.ofNullable(System.getenv("FUMETTI_PORT")).orElse("8000");
+
         try {
-            this.setUri("localhost", 8080);
-        } catch (URISyntaxException e) {
+            this.setUri(host, Integer.parseInt(port));
+        } catch (URISyntaxException | NumberFormatException e) {
             e.printStackTrace();
         }
     }
