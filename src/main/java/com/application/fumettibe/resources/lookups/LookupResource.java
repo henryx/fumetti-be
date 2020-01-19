@@ -21,6 +21,7 @@ package com.application.fumettibe.resources.lookups;
 import com.application.fumettibe.db.resources.lookups.Lookup;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
@@ -42,11 +43,17 @@ public abstract class LookupResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJson() {
         Response res;
-        ArrayList<JsonObject> results;
+        JsonArray results;
 
         try (lookup) {
             results = lookup.select();
-            res = Response.ok(results).build();
+
+            var msg = Json.createObjectBuilder()
+                    .add("op", "ok")
+                    .add("data", results)
+                    .build();
+
+            res = Response.ok(msg).build();
         } catch (Exception e) {
             String strmsg;
             JsonObject msg;

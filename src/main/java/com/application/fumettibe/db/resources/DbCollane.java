@@ -21,13 +21,14 @@ package com.application.fumettibe.db.resources;
 import com.application.fumettibe.db.Database;
 
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.util.ArrayList;
 
 public class DbCollane extends Database {
     public DbCollane() {
@@ -39,13 +40,13 @@ public class DbCollane extends Database {
     }
 
     @Override
-    public ArrayList<JsonObject> select() throws SQLException, NamingException {
-        ArrayList<JsonObject> values;
+    public JsonArray select() throws SQLException, NamingException {
+        JsonArrayBuilder values;
         String query = "SELECT id_collana, nome FROM collane ORDER BY nome";
 
         prepare();
 
-        values = new ArrayList<>();
+        values = Json.createArrayBuilder();
         try (Statement stmt = conn.createStatement();
              ResultSet res = stmt.executeQuery(query)) {
             while (res.next()) {
@@ -57,6 +58,6 @@ public class DbCollane extends Database {
                 values.add(data);
             }
         }
-        return values;
+        return values.build();
     }
 }

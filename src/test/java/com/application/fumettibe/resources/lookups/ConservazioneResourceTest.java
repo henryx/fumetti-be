@@ -71,13 +71,12 @@ public class ConservazioneResourceTest {
 
         Assert.assertThat(Arrays.asList(200, 400), CoreMatchers.hasItem(status));
 
+        var responseMsg = new JSONObject(invoke.readEntity(String.class));
+        Assert.assertTrue(responseMsg.has("op"));
+
         if (status == 200) {
-            var responseMsg = invoke.readEntity(ArrayList.class);
-            var responseJson = new JSONArray(responseMsg);
-            Assert.assertThat(responseJson, CoreMatchers.isA(JSONArray.class));
+            Assert.assertTrue(responseMsg.has("data"));
         } else {
-            var responseMsg = new JSONObject(invoke.readEntity(String.class));
-            Assert.assertTrue(responseMsg.has("op"));
             Assert.assertTrue(responseMsg.has("motivation"));
             Assert.assertTrue(responseMsg.has("msg"));
         }

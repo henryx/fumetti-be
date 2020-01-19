@@ -3,6 +3,8 @@ package com.application.fumettibe.db.resources.lookups;
 import com.application.fumettibe.db.Database;
 
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import java.sql.ResultSet;
@@ -23,12 +25,12 @@ public abstract class Lookup extends Database {
         // Not implemented
     }
 
-    public ArrayList<JsonObject> select() throws NamingException, SQLException {
-        ArrayList<JsonObject> values;
+    public JsonArray select() throws NamingException, SQLException {
+        JsonArrayBuilder values;
 
         prepare();
 
-        values = new ArrayList<>();
+        values = Json.createArrayBuilder();
         try (Statement stmt = conn.createStatement();
              ResultSet res = stmt.executeQuery(query)) {
             while (res.next()) {
@@ -40,6 +42,6 @@ public abstract class Lookup extends Database {
                 values.add(data);
             }
         }
-        return values;
+        return values.build();
     }
 }

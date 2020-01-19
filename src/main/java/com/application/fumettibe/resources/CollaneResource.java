@@ -3,6 +3,7 @@ package com.application.fumettibe.resources;
 import com.application.fumettibe.db.resources.DbCollane;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
@@ -14,7 +15,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 
 @Path("/collane")
 public class CollaneResource {
@@ -29,11 +29,17 @@ public class CollaneResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJson() {
         Response res;
-        ArrayList<JsonObject> results;
+        JsonArray results;
 
         try (DbCollane db = new DbCollane()) {
             results = db.select();
-            res = Response.ok(results).build();
+
+            var msg = Json.createObjectBuilder()
+                    .add("op", "ok")
+                    .add("data", results)
+                    .build();
+
+            res = Response.ok(msg).build();
         } catch (Exception e) {
             String strmsg;
             JsonObject msg;
@@ -56,5 +62,6 @@ public class CollaneResource {
 
             res = Response.status(400).entity(msg).build();
         }
-        return res;    }
+        return res;
+    }
 }

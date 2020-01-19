@@ -20,6 +20,7 @@ package com.application.fumettibe.db.resources;
 
 import com.application.fumettibe.db.Database;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -28,7 +29,6 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class DbAlbi extends Database {
@@ -60,7 +60,7 @@ public class DbAlbi extends Database {
     }
 
     @Override
-    public ArrayList<JsonObject> select() {
+    public JsonArray select() {
         return null;
     }
 }

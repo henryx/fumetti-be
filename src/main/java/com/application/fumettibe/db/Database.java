@@ -18,6 +18,7 @@
 
 package com.application.fumettibe.db;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -25,7 +26,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 
 public abstract class Database implements AutoCloseable{
     protected Connection conn;
@@ -48,5 +48,5 @@ public abstract class Database implements AutoCloseable{
     }
 
     public abstract void insert(JsonObject data) throws SQLException, ParseException, NamingException;
-    public abstract ArrayList<JsonObject> select() throws SQLException, NamingException;
+    public abstract JsonArray select() throws SQLException, NamingException;
 }
