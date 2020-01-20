@@ -57,11 +57,11 @@ public class Main {
 
     private BasicDataSource setDatasource() throws NoSuchFieldException {
         BasicDataSource bds = new BasicDataSource();
-        var host = Optional.ofNullable(System.getenv("FUMETTI_HOST")).orElse("localhost");
-        var port = Optional.ofNullable(System.getenv("FUMETTI_PORT")).orElse("5432");
-        var db = Optional.ofNullable(System.getenv("FUMETTI_DATABASE")).orElse("fumetti");
-        var user = Optional.ofNullable(System.getenv("FUMETTI_USER")).orElseThrow(() -> new NoSuchFieldException("Cannot retrieve username"));
-        var password = Optional.ofNullable(System.getenv("FUMETTI_PASSWORD")).orElseThrow(() -> new NoSuchFieldException("Cannot retrieve password"));
+        var host = Optional.ofNullable(System.getenv("FUMETTI_DB_HOST")).orElse("localhost");
+        var port = Optional.ofNullable(System.getenv("FUMETTI_DB_PORT")).orElse("5432");
+        var db = Optional.ofNullable(System.getenv("FUMETTI_DB_NAME")).orElse("fumetti");
+        var user = Optional.ofNullable(System.getenv("FUMETTI_DB_USER")).orElseThrow(() -> new NoSuchFieldException("Cannot retrieve username for database"));
+        var password = Optional.ofNullable(System.getenv("FUMETTI_DB_PASSWORD")).orElseThrow(() -> new NoSuchFieldException("Cannot retrieve password for database"));
 
         bds.setDriverClassName("org.postgresql.Driver");
         bds.setUrl(String.format("jdbc:postgresql://%s:%s/%s", host, port, db));
