@@ -19,18 +19,19 @@ package com.application.fumettibe.resources;
 
 import com.application.fumettibe.Main;
 import org.eclipse.jetty.server.Server;
+import org.hamcrest.CoreMatchers;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -96,6 +97,22 @@ public class AlbiResourceTest {
         String responseMsg = target.request().post(Entity.entity(req.toString(), MediaType.APPLICATION_JSON_TYPE)).readEntity(String.class);
 
         JSONAssert.assertEquals(responseMsg, res, false);
+    }
+
+    @Test
+    public void postMalformed() throws JSONException {
+        JSONObject res = new JSONObject()
+                .put("code", "Internal server error")
+                .put("op", "ko");
+        String req = "{\"type\": \"test\"";
+
+        Invocation.Builder builder = target.request(MediaType.APPLICATION_JSON_TYPE);
+        var invoke = builder.buildPost(Entity.json(req)).invoke();
+        var status = invoke.getStatus();
+        var responseMsg = new JSONObject(invoke.readEntity(String.class));
+
+        Assert.assertThat(Arrays.asList(500), CoreMatchers.hasItem(status));
+        JSONAssert.assertEquals(res, responseMsg, false);
     }
 
     @Test
