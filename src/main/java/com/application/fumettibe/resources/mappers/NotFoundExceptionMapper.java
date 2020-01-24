@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.application.fumettibe.resources;
+package com.application.fumettibe.resources.mappers;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -29,7 +29,7 @@ import javax.ws.rs.ext.Provider;
 import java.util.List;
 
 @Provider
-public class NotFoundExceptionHandler implements ExceptionMapper<NotFoundException> {
+public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
 
     @Context
     private HttpHeaders headers;
