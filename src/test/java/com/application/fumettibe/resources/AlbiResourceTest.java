@@ -102,7 +102,7 @@ public class AlbiResourceTest {
     @Test
     public void postMalformed() throws JSONException {
         JSONObject res = new JSONObject()
-                .put("code", "Internal server error")
+                .put("message", "JSON Error")
                 .put("op", "ko");
         String req = "{\"type\": \"test\"";
 
