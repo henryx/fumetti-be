@@ -18,8 +18,8 @@
 package com.application.fumettibe.resources.mappers;
 
 import javax.json.Json;
+import javax.json.JsonException;
 import javax.json.JsonObject;
-import javax.json.stream.JsonParsingException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -29,17 +29,17 @@ import javax.ws.rs.ext.Provider;
 import java.util.List;
 
 @Provider
-public class JSONRequestFailedMapper implements ExceptionMapper<JsonParsingException> {
+public class JSONRequestFailedMapper implements ExceptionMapper<JsonException> {
 
     @Context
     private HttpHeaders headers;
 
     @Override
-    public Response toResponse(JsonParsingException e) {
+    public Response toResponse(JsonException e) {
         JsonObject msg = Json.createObjectBuilder()
-                .add("code", "Internal server error")
+                .add("message", "JSON Error")
                 .add("op", "ko")
-                .add("message", e.getMessage())
+                .add("detail", e.getMessage())
                 .build();
 
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg.toString()).type(getAcceptType()).build();
