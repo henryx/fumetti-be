@@ -1,46 +1,17 @@
 package com.application.fumettibe.resources;
 
-import com.application.fumettibe.Main;
-import org.eclipse.jetty.server.Server;
+import com.application.fumettibe.Tester;
 import org.hamcrest.CoreMatchers;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
 
-public class CollaneResourceTest {
-
-    private Server server;
-    private WebTarget target;
-
-    @Before
-    public void setUp() throws Exception {
-        Main m = new Main();
-
-        // start the server
-        server = m.startServer();
-        server.setStopAtShutdown(true);
-        server.start();
-
-        // create the client
-        Client c = ClientBuilder.newClient();
-
-        target = c.target(m.toUrl());
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        server.stop();
-    }
+public class CollaneResourceTest extends Tester {
 
     @Test
     public void getJson() throws JSONException {
