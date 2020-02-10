@@ -19,6 +19,7 @@
 package com.application.fumettibe.resources.lookups;
 
 import com.application.fumettibe.Main;
+import com.application.fumettibe.Tester;
 import org.eclipse.jetty.server.Server;
 import org.hamcrest.CoreMatchers;
 import org.json.JSONException;
@@ -35,30 +36,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
 
-public class PeriodicitaResourceTest {
-
-    private Server server;
-    private WebTarget target;
-
-    @Before
-    public void setUp() throws Exception {
-        Main m = new Main();
-
-        // start the server
-        server = m.startServer();
-        server.setStopAtShutdown(true);
-        server.start();
-
-        // create the client
-        Client c = ClientBuilder.newClient();
-
-        target = c.target(m.toUrl());
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        server.stop();
-    }
+public class PeriodicitaResourceTest extends Tester {
 
     @Test
     public void getJson() throws JSONException {

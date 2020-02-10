@@ -18,6 +18,7 @@
 package com.application.fumettibe.resources;
 
 import com.application.fumettibe.Main;
+import com.application.fumettibe.Tester;
 import org.eclipse.jetty.server.Server;
 import org.hamcrest.CoreMatchers;
 import org.json.JSONException;
@@ -35,30 +36,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
-public class AlbiResourceTest {
-
-    private Server server;
-    private WebTarget target;
-
-    @Before
-    public void setUp() throws Exception {
-        Main m = new Main();
-
-        // start the server
-        server = m.startServer();
-        server.setStopAtShutdown(true);
-        server.start();
-
-        // create the client
-        Client c = ClientBuilder.newClient();
-
-        target = c.target(m.toUrl()).path("albi");
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        server.stop();
-    }
+public class AlbiResourceTest extends Tester {
 
     @Test
     public void getJson() throws JSONException {
@@ -66,7 +44,7 @@ public class AlbiResourceTest {
                 .put("msg", "Not implemented")
                 .put("op", "ok");
 
-        String responseMsg = target.request(MediaType.APPLICATION_JSON_TYPE).get(String.class);
+        String responseMsg = target.path("/albi").request(MediaType.APPLICATION_JSON_TYPE).get(String.class);
 
         assertEquals(res.toString(), responseMsg);
     }
@@ -80,7 +58,7 @@ public class AlbiResourceTest {
                 .put("op", "ok")
                 .put("arg", serie);
 
-        String responseMsg = target.path(serie).request().get(String.class);
+        String responseMsg = target.path(String.format("/albi/%s", serie)).request().get(String.class);
 
         JSONAssert.assertEquals(responseMsg, res, false);
     }
@@ -94,7 +72,7 @@ public class AlbiResourceTest {
 
         JSONObject req = new JSONObject().put("type", "test");
 
-        String responseMsg = target.request().post(Entity.entity(req.toString(), MediaType.APPLICATION_JSON_TYPE)).readEntity(String.class);
+        String responseMsg = target.path("/albi").request().post(Entity.entity(req.toString(), MediaType.APPLICATION_JSON_TYPE)).readEntity(String.class);
 
         JSONAssert.assertEquals(responseMsg, res, false);
     }
@@ -106,7 +84,7 @@ public class AlbiResourceTest {
                 .put("op", "ko");
         String req = "{\"type\": \"test\"";
 
-        Invocation.Builder builder = target.request(MediaType.APPLICATION_JSON_TYPE);
+        Invocation.Builder builder = target.path("/albi").request(MediaType.APPLICATION_JSON_TYPE);
         var invoke = builder.buildPost(Entity.json(req)).invoke();
         var status = invoke.getStatus();
         var responseMsg = new JSONObject(invoke.readEntity(String.class));
@@ -123,7 +101,7 @@ public class AlbiResourceTest {
                 .put("msg", "Not implemented")
                 .put("op", "ok");
 
-        String responseMsg = target.path(serie).request().delete(String.class);
+        String responseMsg = target.path(String.format("/albi/%s", serie)).request().delete(String.class);
 
         assertEquals(res.toString(), responseMsg);
     }
