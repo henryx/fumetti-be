@@ -2,6 +2,7 @@ package com.application.fumettibe.resources;
 
 import com.application.fumettibe.Tester;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -22,7 +23,7 @@ public class SerieResourceTest extends Tester {
 
         var status = invoke.getStatus();
 
-        Assert.assertThat(Arrays.asList(200, 400), CoreMatchers.hasItem(status));
+        MatcherAssert.assertThat(Arrays.asList(200, 400), CoreMatchers.hasItem(status));
 
         var responseMsg = new JSONObject(invoke.readEntity(String.class));
         Assert.assertTrue(responseMsg.has("op"));

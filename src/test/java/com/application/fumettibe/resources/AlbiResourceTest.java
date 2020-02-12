@@ -17,21 +17,17 @@
  */
 package com.application.fumettibe.resources;
 
-import com.application.fumettibe.Main;
 import com.application.fumettibe.Tester;
-import org.eclipse.jetty.server.Server;
 import org.hamcrest.CoreMatchers;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import javax.ws.rs.client.*;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
-
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
