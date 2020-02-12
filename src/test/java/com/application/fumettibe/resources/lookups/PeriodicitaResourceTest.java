@@ -18,21 +18,15 @@
 
 package com.application.fumettibe.resources.lookups;
 
-import com.application.fumettibe.Main;
 import com.application.fumettibe.Tester;
-import org.eclipse.jetty.server.Server;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
 
@@ -45,7 +39,7 @@ public class PeriodicitaResourceTest extends Tester {
 
         var status = invoke.getStatus();
 
-        Assert.assertThat(Arrays.asList(200, 400), CoreMatchers.hasItem(status));
+        MatcherAssert.assertThat(Arrays.asList(200, 400), CoreMatchers.hasItem(status));
 
         var responseMsg = new JSONObject(invoke.readEntity(String.class));
         Assert.assertTrue(responseMsg.has("op"));

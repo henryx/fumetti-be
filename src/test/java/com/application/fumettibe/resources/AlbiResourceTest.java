@@ -19,9 +19,9 @@ package com.application.fumettibe.resources;
 
 import com.application.fumettibe.Tester;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -85,7 +85,7 @@ public class AlbiResourceTest extends Tester {
         var status = invoke.getStatus();
         var responseMsg = new JSONObject(invoke.readEntity(String.class));
 
-        Assert.assertThat(Arrays.asList(500), CoreMatchers.hasItem(status));
+        MatcherAssert.assertThat(Arrays.asList(500), CoreMatchers.hasItem(status));
         JSONAssert.assertEquals(res, responseMsg, false);
     }
 
