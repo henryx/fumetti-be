@@ -17,7 +17,7 @@ import java.util.List;
 public class UnsupportedMediaMapper implements ExceptionMapper<NotSupportedException> {
 
     @Context
-    private HttpHeaders headers;
+    public HttpHeaders headers;
 
     @Override
     public Response toResponse(NotSupportedException e) {

@@ -16,7 +16,7 @@ import java.util.List;
 public class KoExceptionMapper implements ExceptionMapper<KoException> {
 
     @Context
-    private HttpHeaders headers;
+    public HttpHeaders headers;
 
     @Override
     public Response toResponse(KoException e) {

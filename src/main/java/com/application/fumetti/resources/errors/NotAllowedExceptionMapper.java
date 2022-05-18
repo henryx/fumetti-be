@@ -14,7 +14,7 @@ import java.util.List;
 
 public class NotAllowedExceptionMapper implements ExceptionMapper<NotAllowedException> {
     @Context
-    private HttpHeaders headers;
+    public HttpHeaders headers;
 
     @Override
     public Response toResponse(NotAllowedException e) {

@@ -17,7 +17,7 @@ import java.util.List;
 public class JsonExceptionMapper implements ExceptionMapper<JsonProcessingException> {
 
     @Context
-    private HttpHeaders headers;
+    public HttpHeaders headers;
 
     @Override
     public Response toResponse(JsonProcessingException e) {

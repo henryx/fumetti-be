@@ -17,7 +17,7 @@ import java.util.List;
 public class InteralServerErrorMapper implements ExceptionMapper<InternalServerErrorException> {
 
     @Context
-    private HttpHeaders headers;
+    public HttpHeaders headers;
 
     @Override
     public Response toResponse(InternalServerErrorException e) {

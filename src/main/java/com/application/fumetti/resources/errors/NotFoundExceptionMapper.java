@@ -17,7 +17,7 @@ import java.util.List;
 public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
 
     @Context
-    private HttpHeaders headers;
+    public HttpHeaders headers;
 
     public Response toResponse(NotFoundException e) {
         var msg = new ErrorResponse(Operations.ERROR.getOperation(), Results.KO.getResult(), e.getMessage(), null);

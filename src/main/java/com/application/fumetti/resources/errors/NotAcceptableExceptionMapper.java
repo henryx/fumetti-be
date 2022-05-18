@@ -17,7 +17,7 @@ import java.util.List;
 public class NotAcceptableExceptionMapper implements ExceptionMapper<NotAcceptableException> {
 
     @Context
-    private HttpHeaders headers;
+    public HttpHeaders headers;
 
     public Response toResponse(NotAcceptableException e) {
         var msg = new ErrorResponse(Operations.ERROR.getOperation(), Results.KO.getResult(), e.getMessage(), null);
