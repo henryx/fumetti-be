@@ -2,6 +2,8 @@ package com.application;
 
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
+import com.application.fumetti.mappers.requests.CurrenciesRequest;
+import com.application.fumetti.mappers.responses.CurrenciesResponse;
 import com.application.fumetti.mappers.responses.ErrorResponse;
 import com.application.fumetti.mappers.responses.IndexResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,10 +11,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
+
+import java.math.BigDecimal;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -53,5 +54,26 @@ public class RoutesTest {
 
         resp.then().assertThat().statusCode(404);
         Assertions.assertEquals(res.getResult(), Results.KO.getResult());
+    }
+
+    @Test
+    @Order(1)
+    public void postCurrencies() throws JsonProcessingException {
+        final String BASE_PATH = "/currencies";
+        var req = new CurrenciesRequest("Euro", "€", new BigDecimal("1936.27"), new BigDecimal("1.00"));
+
+        var json = this.mapper.writeValueAsString(req);
+        var resp = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(json)
+                .post(BASE_PATH);
+
+        var body = resp.body().asString();
+        var res = this.mapper.readValue(body, CurrenciesResponse.class);
+
+        resp.then().assertThat().statusCode(200);
+        Assertions.assertEquals(Operations.LOOKUP.getOperation(), res.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
 }
