@@ -4,13 +4,13 @@ import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.requests.CurrenciesRequest;
 import com.application.fumetti.mappers.responses.CurrenciesResponse;
+import com.application.fumetti.mappers.results.CurrencyResult;
 
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/currencies")
 public class Currencies {
@@ -28,5 +28,14 @@ public class Currencies {
         currencies.persist();
 
         return new CurrenciesResponse(Operations.LOOKUP, Results.OK, null);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public CurrenciesResponse getCurrencies() {
+        List<com.application.fumetti.db.Currencies> currencies = com.application.fumetti.db.Currencies.findAll().list();
+
+        var data = currencies.stream().map(ie -> new CurrencyResult(ie.id, ie.name, ie.symbol, ie.valueLire, ie.valueEuro)).collect(Collectors.toList());
+        return new CurrenciesResponse(Operations.LOOKUP, Results.OK, data);
     }
 }
