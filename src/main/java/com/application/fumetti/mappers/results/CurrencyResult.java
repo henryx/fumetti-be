@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 public class CurrencyResult {
-    private final Integer id;
+    private final Long id;
     private final String name;
     private final String symbol;
     private final BigDecimal valueLire;
     private final BigDecimal valueEuro;
 
-    public CurrencyResult(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NON_NULL) Integer id,
+    public CurrencyResult(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NON_NULL) Long id,
                           @JsonProperty("name") String name,
                           @JsonProperty("symbol") String symbol,
                           @JsonProperty("value_lire") BigDecimal valueLire,
@@ -25,7 +25,7 @@ public class CurrencyResult {
         this.valueEuro = valueEuro;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
