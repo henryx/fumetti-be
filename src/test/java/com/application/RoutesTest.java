@@ -3,9 +3,12 @@ package com.application;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.requests.CurrenciesRequest;
+import com.application.fumetti.mappers.requests.NationsRequest;
 import com.application.fumetti.mappers.responses.CurrenciesResponse;
 import com.application.fumetti.mappers.responses.ErrorResponse;
 import com.application.fumetti.mappers.responses.IndexResponse;
+import com.application.fumetti.mappers.responses.NationsResponse;
+import com.application.fumetti.mappers.results.CurrencyResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
@@ -92,6 +95,27 @@ public class RoutesTest {
 
         resp.then().assertThat().statusCode(200);
         Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
+    }
+
+    @Test
+    @Order(3)
+    public void postNations() throws JsonProcessingException {
+        final String BASE_PATH = "/nations";
+        var req = new NationsRequest("Italia", "IT", new CurrencyResult(1L, "Euro", "€", new BigDecimal("1936.27"), new BigDecimal("1.00")));
+
+        var json = this.mapper.writeValueAsString(req);
+        var resp = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(json)
+                .post(BASE_PATH);
+
+        var body = resp.body().asString();
+        var res = this.mapper.readValue(body, NationsResponse.class);
+
+        resp.then().assertThat().statusCode(200);
+        Assertions.assertEquals(Operations.LOOKUP.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
 }
