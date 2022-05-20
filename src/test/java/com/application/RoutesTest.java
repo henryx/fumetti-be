@@ -117,4 +117,21 @@ public class RoutesTest {
         Assertions.assertEquals(Operations.LOOKUP.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
+
+    @Test
+    public void getNations() throws JsonProcessingException {
+        final String BASE_PATH = "/nations";
+
+        var resp = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get(BASE_PATH);
+
+        var body = resp.body().asString();
+        var res = this.mapper.readValue(body, NationsResponse.class);
+
+        resp.then().assertThat().statusCode(200);
+        Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
+    }
 }
