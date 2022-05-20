@@ -81,7 +81,6 @@ public class RoutesTest {
     }
 
     @Test
-    @Order(2)
     public void getCurrencies() throws JsonProcessingException {
         final String BASE_PATH = "/currencies";
 
@@ -99,7 +98,7 @@ public class RoutesTest {
     }
 
     @Test
-    @Order(3)
+    @Order(2)
     public void postNations() throws JsonProcessingException {
         final String BASE_PATH = "/nations";
         var req = new NationsRequest("Italia", "IT", new CurrencyResult(1L, "Euro", "€", new BigDecimal("1936.27"), new BigDecimal("1.00")));
