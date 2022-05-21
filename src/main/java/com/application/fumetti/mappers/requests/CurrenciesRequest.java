@@ -2,12 +2,10 @@ package com.application.fumetti.mappers.requests;
 
 import com.application.fumetti.mappers.results.CurrencyResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.math.BigDecimal;
 
 public class CurrenciesRequest {
-    @JsonUnwrapped
     private final CurrencyResult data;
 
     public CurrenciesRequest(@JsonProperty("name") String name,
