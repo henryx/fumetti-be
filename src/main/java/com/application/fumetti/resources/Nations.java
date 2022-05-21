@@ -22,7 +22,7 @@ public class Nations {
     @Transactional
     public NationsResponse postNation(NationsRequest req) {
         var currency = new Currencies();
-        currency.id = req.getCurrency().getId();
+        currency.id = req.getCurrency().id();
 
         var nation = new com.application.fumetti.db.Nations();
         nation.name = req.getName();

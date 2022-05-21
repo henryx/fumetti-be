@@ -21,10 +21,10 @@ public class Currencies {
     @Transactional
     public CurrenciesResponse postCurrencies(CurrenciesRequest req) {
         var currencies = new com.application.fumetti.db.Currencies();
-        currencies.name = req.getName();
-        currencies.symbol = req.getSymbol();
-        currencies.valueLire = req.getValueLire();
-        currencies.valueEuro = req.getValueEuro();
+        currencies.name = req.getData().name();
+        currencies.symbol = req.getData().symbol();
+        currencies.valueLire = req.getData().valueLire();
+        currencies.valueEuro = req.getData().valueEuro();
         currencies.persist();
 
         return new CurrenciesResponse(Operations.LOOKUP, Results.OK, null);
