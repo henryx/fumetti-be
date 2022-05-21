@@ -7,7 +7,11 @@ import com.application.fumetti.mappers.requests.NationsRequest;
 import com.application.fumetti.mappers.responses.NationsResponse;
 import com.application.fumetti.mappers.results.CurrencyResult;
 import com.application.fumetti.mappers.results.NationResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -16,17 +20,20 @@ import java.util.stream.Collectors;
 
 @Path("/nations")
 public class Nations {
+    @Inject
+    ObjectMapper mapper;
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public NationsResponse postNation(NationsRequest req) {
         var currency = new Currencies();
-        currency.id = req.getCurrency().id();
+        currency.id = req.getData().currency().id();
 
         var nation = new com.application.fumetti.db.Nations();
-        nation.name = req.getName();
-        nation.sign = req.getSign();
+        nation.name = req.getData().name();
+        nation.sign = req.getData().sign();
         nation.currency = currency;
         nation.persist();
 
