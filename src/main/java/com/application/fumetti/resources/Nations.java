@@ -3,12 +3,10 @@ package com.application.fumetti.resources;
 import com.application.fumetti.db.Currencies;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
+import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.requests.NationsRequest;
-import com.application.fumetti.mappers.responses.NationsResponse;
 import com.application.fumetti.mappers.results.CurrencyResult;
 import com.application.fumetti.mappers.results.NationResult;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.inject.Inject;
@@ -27,7 +25,7 @@ public class Nations {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public NationsResponse postNation(NationsRequest req) {
+    public Response postNation(NationsRequest req) {
         var currency = new Currencies();
         currency.id = req.getData().currency().id();
 
@@ -37,12 +35,12 @@ public class Nations {
         nation.currency = currency;
         nation.persist();
 
-        return new NationsResponse(Operations.LOOKUP, Results.OK, null);
+        return new Response(Operations.LOOKUP, Results.OK);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public NationsResponse getNations() {
+    public Response<NationResult> getNations() {
         List<com.application.fumetti.db.Nations> currencies = com.application.fumetti.db.Nations.findAll().list();
 
         var data = currencies.stream().map(ie -> {
@@ -51,6 +49,8 @@ public class Nations {
             return new NationResult(ie.id, ie.name, ie.sign, currency);
         }).collect(Collectors.toList());
 
-        return new NationsResponse(Operations.LOOKUP, Results.OK, data);
+        var resp = new Response<NationResult>(Operations.LOOKUP, Results.OK);
+        resp.setData(data);
+        return resp;
     }
 }

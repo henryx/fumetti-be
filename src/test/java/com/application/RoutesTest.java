@@ -2,12 +2,9 @@ package com.application;
 
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
+import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.requests.CurrenciesRequest;
 import com.application.fumetti.mappers.requests.NationsRequest;
-import com.application.fumetti.mappers.responses.CurrenciesResponse;
-import com.application.fumetti.mappers.responses.ErrorResponse;
-import com.application.fumetti.mappers.responses.IndexResponse;
-import com.application.fumetti.mappers.responses.NationsResponse;
 import com.application.fumetti.mappers.results.CurrencyResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +34,7 @@ public class RoutesTest {
                 .when().get(BASE_PATH).then().contentType(ContentType.JSON).extract().response();
 
         var body = resp.body().asString();
-        var res = this.mapper.readValue(body, IndexResponse.class);
+        var res = this.mapper.readValue(body, Response.class);
 
         resp.then().assertThat().statusCode(200);
         Assertions.assertEquals(res.getOperation(), Operations.INDEX.getOperation());
@@ -53,7 +50,7 @@ public class RoutesTest {
                 .when().get(BASE_PATH + "/notfound").then().contentType(ContentType.JSON).extract().response();
 
         var body = resp.body().asString();
-        var res = this.mapper.readValue(body, ErrorResponse.class);
+        var res = this.mapper.readValue(body, Response.class);
 
         resp.then().assertThat().statusCode(404);
         Assertions.assertEquals(res.getResult(), Results.KO.getResult());
@@ -73,7 +70,7 @@ public class RoutesTest {
                 .post(BASE_PATH);
 
         var body = resp.body().asString();
-        var res = this.mapper.readValue(body, CurrenciesResponse.class);
+        var res = this.mapper.readValue(body, Response.class);
 
         resp.then().assertThat().statusCode(200);
         Assertions.assertEquals(Operations.LOOKUP.getOperation(), res.getOperation());
@@ -90,7 +87,7 @@ public class RoutesTest {
                 .get(BASE_PATH);
 
         var body = resp.body().asString();
-        var res = this.mapper.readValue(body, CurrenciesResponse.class);
+        var res = this.mapper.readValue(body, Response.class);
 
         resp.then().assertThat().statusCode(200);
         Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
@@ -111,7 +108,7 @@ public class RoutesTest {
                 .post(BASE_PATH);
 
         var body = resp.body().asString();
-        var res = this.mapper.readValue(body, NationsResponse.class);
+        var res = this.mapper.readValue(body, Response.class);
 
         resp.then().assertThat().statusCode(200);
         Assertions.assertEquals(Operations.LOOKUP.getOperation(), res.getOperation());
@@ -128,7 +125,7 @@ public class RoutesTest {
                 .get(BASE_PATH);
 
         var body = resp.body().asString();
-        var res = this.mapper.readValue(body, NationsResponse.class);
+        var res = this.mapper.readValue(body, Response.class);
 
         resp.then().assertThat().statusCode(200);
         Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());

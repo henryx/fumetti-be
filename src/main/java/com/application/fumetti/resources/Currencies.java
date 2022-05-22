@@ -2,8 +2,8 @@ package com.application.fumetti.resources;
 
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
+import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.requests.CurrenciesRequest;
-import com.application.fumetti.mappers.responses.CurrenciesResponse;
 import com.application.fumetti.mappers.results.CurrencyResult;
 
 import javax.transaction.Transactional;
@@ -19,7 +19,7 @@ public class Currencies {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public CurrenciesResponse postCurrencies(CurrenciesRequest req) {
+    public Response postCurrencies(CurrenciesRequest req) {
         var currencies = new com.application.fumetti.db.Currencies();
         currencies.name = req.getData().name();
         currencies.symbol = req.getData().symbol();
@@ -27,15 +27,18 @@ public class Currencies {
         currencies.valueEuro = req.getData().valueEuro();
         currencies.persist();
 
-        return new CurrenciesResponse(Operations.LOOKUP, Results.OK, null);
+        return new Response(Operations.LOOKUP, Results.OK);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public CurrenciesResponse getCurrencies() {
+    public Response<CurrencyResult> getCurrencies() {
         List<com.application.fumetti.db.Currencies> currencies = com.application.fumetti.db.Currencies.findAll().list();
 
         var data = currencies.stream().map(ie -> new CurrencyResult(ie.id, ie.name, ie.symbol, ie.valueLire, ie.valueEuro)).collect(Collectors.toList());
-        return new CurrenciesResponse(Operations.LOOKUP, Results.OK, data);
+        var resp = new Response<CurrencyResult>(Operations.LOOKUP, Results.OK);
+        resp.setData(data);
+
+        return resp;
     }
 }

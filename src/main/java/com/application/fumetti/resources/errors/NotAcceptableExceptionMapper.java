@@ -2,7 +2,6 @@ package com.application.fumetti.resources.errors;
 
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
-import com.application.fumetti.mappers.responses.ErrorResponse;
 
 import javax.ws.rs.NotAcceptableException;
 import javax.ws.rs.core.Context;
@@ -20,8 +19,9 @@ public class NotAcceptableExceptionMapper implements ExceptionMapper<NotAcceptab
     public HttpHeaders headers;
 
     public Response toResponse(NotAcceptableException e) {
-        var msg = new ErrorResponse(Operations.ERROR.getOperation(), Results.KO.getResult(), e.getMessage(), null);
-        ;
+        var msg = new com.application.fumetti.mappers.Response<>(Operations.ERROR, Results.KO);
+        msg.setMessage(e.getMessage());
+
         return Response.status(Response.Status.NOT_ACCEPTABLE).entity(msg.toString()).type(getAcceptType()).build();
     }
 

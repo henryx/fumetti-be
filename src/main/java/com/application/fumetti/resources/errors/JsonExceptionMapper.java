@@ -2,7 +2,6 @@ package com.application.fumetti.resources.errors;
 
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
-import com.application.fumetti.mappers.responses.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.ws.rs.core.Context;
@@ -21,7 +20,9 @@ public class JsonExceptionMapper implements ExceptionMapper<JsonProcessingExcept
 
     @Override
     public Response toResponse(JsonProcessingException e) {
-        var msg = new ErrorResponse(Operations.ERROR.getOperation(), Results.KO.getResult(), e.getMessage(), null);
+        var msg = new com.application.fumetti.mappers.Response<>(Operations.ERROR, Results.KO);
+        msg.setMessage(e.getMessage());
+
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg.toString()).type(getAcceptType()).build();
     }
 

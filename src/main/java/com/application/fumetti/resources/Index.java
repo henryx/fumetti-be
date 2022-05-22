@@ -2,7 +2,7 @@ package com.application.fumetti.resources;
 
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
-import com.application.fumetti.mappers.responses.IndexResponse;
+import com.application.fumetti.mappers.Response;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,7 +14,9 @@ public class Index {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public IndexResponse index() {
-        return new IndexResponse(Operations.INDEX.getOperation(), Results.OK.getResult(), "Fumetti Database Backend");
+    public Response index() {
+        var resp = new Response(Operations.INDEX, Results.OK);
+        resp.setMessage("Fumetti Database Backend");
+        return resp;
     }
 }

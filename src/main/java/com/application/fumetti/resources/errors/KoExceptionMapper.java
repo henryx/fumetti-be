@@ -1,8 +1,8 @@
 package com.application.fumetti.resources.errors;
 
+import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.exceptions.KoException;
-import com.application.fumetti.mappers.responses.ErrorResponse;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -20,7 +20,9 @@ public class KoExceptionMapper implements ExceptionMapper<KoException> {
 
     @Override
     public Response toResponse(KoException e) {
-        var msg = new ErrorResponse(e.getOperation(), Results.KO.getResult(), e.getMessage(), e.getDetails());
+        var msg = new com.application.fumetti.mappers.Response<>(Operations.ERROR, Results.KO);
+        msg.setMessage(e.getMessage());
+
         return Response.status(e.getStatusCode()).entity(msg.toString()).type(getAcceptType()).build();
     }
 
