@@ -6,7 +6,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public abstract class Response<T> extends Mapper {
+import java.io.Serializable;
+import java.util.List;
+
+public class Response<T> extends Mapper {
     @JsonProperty("operation")
     private String operation;
 
@@ -16,6 +19,10 @@ public abstract class Response<T> extends Mapper {
     @JsonProperty("message")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
+
+    @JsonProperty("data")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<T> data;
 
     @JsonCreator
     public Response() {
@@ -30,29 +37,39 @@ public abstract class Response<T> extends Mapper {
         return operation;
     }
 
-    public T setOperation(String operation) {
+    public Response setOperation(String operation) {
         this.operation = operation;
 
-        return (T) this;
+        return this;
     }
 
     public String getResult() {
         return result;
     }
 
-    public T setResult(String result) {
+    public Response setResult(String result) {
         this.result = result;
 
-        return (T) this;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public T setMessage(String message) {
+    public Response setMessage(String message) {
         this.message = message;
 
-        return (T) this;
+        return this;
+    }
+
+    public Response setData(List<T> data) {
+        this.data = data;
+
+        return this;
+    }
+
+    public List<T> getData() {
+        return data;
     }
 }
