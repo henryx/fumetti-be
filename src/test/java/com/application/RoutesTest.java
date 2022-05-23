@@ -6,7 +6,7 @@ import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.EditorData;
 import com.application.fumetti.mappers.data.NationData;
 import com.application.fumetti.mappers.requests.CurrenciesRequest;
-import com.application.fumetti.mappers.results.CurrencyResult;
+import com.application.fumetti.mappers.data.CurrencyData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
@@ -99,10 +99,10 @@ public class RoutesTest {
         // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
         for (var item : res.getData()) {
             var map = (HashMap<String, Object>) item;
-            var converted = new CurrencyResult(Long.getLong(map.get("id").toString()), map.get("name").toString(),
+            var converted = new CurrencyData(Long.getLong(map.get("id").toString()), map.get("name").toString(),
                     map.get("symbol").toString(), new BigDecimal(map.get("value_lire").toString()),
                     new BigDecimal(map.get("value_euro").toString()));
-            Assertions.assertInstanceOf(CurrencyResult.class, converted); // TODO: useless?
+            Assertions.assertInstanceOf(CurrencyData.class, converted); // TODO: useless?
         }
 
         Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
@@ -114,7 +114,7 @@ public class RoutesTest {
     public void postNations() throws JsonProcessingException {
         final String BASE_PATH = "/nations";
         var req = new NationData(null, "Italia", "IT",
-                new CurrencyResult(1L, "Euro", "€", new BigDecimal("1936.27"),
+                new CurrencyData(1L, "Euro", "€", new BigDecimal("1936.27"),
                         new BigDecimal("1.00")));
 
         var json = this.mapper.writeValueAsString(req);
@@ -152,7 +152,7 @@ public class RoutesTest {
             var map = (HashMap<String, Object>) item;
             var nestedMap = (HashMap<String, Object>) map.get("currency");
 
-            var currency = new CurrencyResult(Long.getLong(nestedMap.get("id").toString()), nestedMap.get("name").toString(),
+            var currency = new CurrencyData(Long.getLong(nestedMap.get("id").toString()), nestedMap.get("name").toString(),
                     nestedMap.get("symbol").toString(), new BigDecimal(nestedMap.get("value_lire").toString()),
                     new BigDecimal(nestedMap.get("value_euro").toString()));
             var converted = new NationData(Long.getLong(map.get("id").toString()), map.get("name").toString(),
@@ -172,7 +172,7 @@ public class RoutesTest {
 
         var req = new EditorData(null, "test editore", "test sede", "https://sito",
                 new NationData(1L, "Italia", "IT",
-                        new CurrencyResult(1L, "Euro", "€", new BigDecimal("1936.27"),
+                        new CurrencyData(1L, "Euro", "€", new BigDecimal("1936.27"),
                                 new BigDecimal("1.00"))));
 
         var json = this.mapper.writeValueAsString(req);

@@ -4,7 +4,7 @@ import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.requests.CurrenciesRequest;
-import com.application.fumetti.mappers.results.CurrencyResult;
+import com.application.fumetti.mappers.data.CurrencyData;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -32,11 +32,11 @@ public class Currencies {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response<CurrencyResult> getCurrencies() {
+    public Response<CurrencyData> getCurrencies() {
         List<com.application.fumetti.db.Currencies> currencies = com.application.fumetti.db.Currencies.findAll().list();
 
-        var data = currencies.stream().map(ie -> new CurrencyResult(ie.id, ie.name, ie.symbol, ie.valueLire, ie.valueEuro)).collect(Collectors.toList());
-        var resp = new Response<CurrencyResult>(Operations.LOOKUP, Results.OK);
+        var data = currencies.stream().map(ie -> new CurrencyData(ie.id, ie.name, ie.symbol, ie.valueLire, ie.valueEuro)).collect(Collectors.toList());
+        var resp = new Response<CurrencyData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
 
         return resp;
