@@ -6,7 +6,6 @@ import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.EditorData;
 import com.application.fumetti.mappers.data.NationData;
 import com.application.fumetti.mappers.requests.CurrenciesRequest;
-import com.application.fumetti.mappers.requests.NationsRequest;
 import com.application.fumetti.mappers.results.CurrencyResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -114,7 +113,9 @@ public class RoutesTest {
     @Order(2)
     public void postNations() throws JsonProcessingException {
         final String BASE_PATH = "/nations";
-        var req = new NationsRequest("Italia", "IT", new CurrencyResult(1L, "Euro", "€", new BigDecimal("1936.27"), new BigDecimal("1.00")));
+        var req = new NationData(null, "Italia", "IT",
+                new CurrencyResult(1L, "Euro", "€", new BigDecimal("1936.27"),
+                        new BigDecimal("1.00")));
 
         var json = this.mapper.writeValueAsString(req);
         var resp = RestAssured.given()
