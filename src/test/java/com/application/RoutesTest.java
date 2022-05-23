@@ -189,4 +189,38 @@ public class RoutesTest {
         Assertions.assertEquals(Operations.EDITORS.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
+
+    @Test
+    public void getEditors() throws JsonProcessingException {
+        final String BASE_PATH = "/editors";
+
+        var resp = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get(BASE_PATH);
+
+        resp.then().assertThat().statusCode(200);
+
+        var body = resp.body().asString();
+        var res = this.mapper.readValue(body, Response.class);
+
+        // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
+        for (var item : res.getData()) {
+            var map = (HashMap<String, Object>) item;
+            var nestedNation = (HashMap<String, Object>) map.get("nation");
+            var nestedCurrency = (HashMap<String, Object>) nestedNation.get("currency");
+
+            var currency = new CurrencyData(Long.getLong(nestedCurrency.get("id").toString()), nestedCurrency.get("name").toString(),
+                    nestedCurrency.get("symbol").toString(), new BigDecimal(nestedCurrency.get("value_lire").toString()),
+                    new BigDecimal(nestedCurrency.get("value_euro").toString()));
+            var nation = new NationData(Long.getLong(nestedNation.get("id").toString()), nestedNation.get("name").toString(),
+                    nestedNation.get("sign").toString(), currency);
+            var converted = new EditorData(Long.getLong(map.get("id").toString()), map.get("name").toString(), map.get("hq").toString(), map.get("website").toString(), nation);
+
+            Assertions.assertInstanceOf(EditorData.class, converted); // TODO: useless?
+        }
+
+        Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
+    }
 }
