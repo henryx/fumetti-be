@@ -4,14 +4,15 @@ import com.application.fumetti.db.Nations;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
+import com.application.fumetti.mappers.data.CurrencyData;
 import com.application.fumetti.mappers.data.EditorData;
+import com.application.fumetti.mappers.data.NationData;
 
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/editors")
 public class Editors {
@@ -32,5 +33,22 @@ public class Editors {
         editor.persist();
 
         return new Response(Operations.EDITORS, Results.OK);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response<EditorData> getEditors() {
+        List<com.application.fumetti.db.Editors> editors = com.application.fumetti.db.Editors.findAll().list();
+
+        var data = editors.stream().map(ie -> {
+            var currency = new CurrencyData(ie.nation.currency.id, ie.nation.currency.name,
+                    ie.nation.currency.symbol, ie.nation.currency.valueLire, ie.nation.currency.valueEuro);
+            var nation = new NationData(ie.nation.id, ie.nation.name, ie.nation.sign, currency);
+            return new EditorData(ie.id, ie.name, ie.hq, ie.website, nation);
+        }).collect(Collectors.toList());
+
+        var resp = new Response<EditorData>(Operations.LOOKUP, Results.OK);
+        resp.setData(data);
+        return resp;
     }
 }
