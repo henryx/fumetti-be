@@ -4,10 +4,10 @@ import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.EditorData;
+import com.application.fumetti.mappers.data.NationData;
 import com.application.fumetti.mappers.requests.CurrenciesRequest;
 import com.application.fumetti.mappers.requests.NationsRequest;
 import com.application.fumetti.mappers.results.CurrencyResult;
-import com.application.fumetti.mappers.results.NationResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
@@ -154,10 +154,10 @@ public class RoutesTest {
             var currency = new CurrencyResult(Long.getLong(nestedMap.get("id").toString()), nestedMap.get("name").toString(),
                     nestedMap.get("symbol").toString(), new BigDecimal(nestedMap.get("value_lire").toString()),
                     new BigDecimal(nestedMap.get("value_euro").toString()));
-            var converted = new NationResult(Long.getLong(map.get("id").toString()), map.get("name").toString(),
+            var converted = new NationData(Long.getLong(map.get("id").toString()), map.get("name").toString(),
                     map.get("sign").toString(), currency);
 
-            Assertions.assertInstanceOf(NationResult.class, converted); // TODO: useless?
+            Assertions.assertInstanceOf(NationData.class, converted); // TODO: useless?
         }
 
         Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
@@ -170,7 +170,7 @@ public class RoutesTest {
         final String BASE_PATH = "/editors";
 
         var req = new EditorData(null, "test editore", "test sede", "https://sito",
-                new NationResult(1L, "Italia", "IT",
+                new NationData(1L, "Italia", "IT",
                         new CurrencyResult(1L, "Euro", "€", new BigDecimal("1936.27"),
                                 new BigDecimal("1.00"))));
 
