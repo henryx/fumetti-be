@@ -3,7 +3,6 @@ package com.application.fumetti.resources;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.requests.CurrenciesRequest;
 import com.application.fumetti.mappers.data.CurrencyData;
 
 import javax.transaction.Transactional;
@@ -19,12 +18,12 @@ public class Currencies {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response postCurrencies(CurrenciesRequest req) {
+    public Response postCurrencies(CurrencyData req) {
         var currencies = new com.application.fumetti.db.Currencies();
-        currencies.name = req.getData().name();
-        currencies.symbol = req.getData().symbol();
-        currencies.valueLire = req.getData().valueLire();
-        currencies.valueEuro = req.getData().valueEuro();
+        currencies.name = req.name();
+        currencies.symbol = req.symbol();
+        currencies.valueLire = req.valueLire();
+        currencies.valueEuro = req.valueEuro();
         currencies.persist();
 
         return new Response(Operations.LOOKUP, Results.OK);

@@ -3,10 +3,9 @@ package com.application;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
+import com.application.fumetti.mappers.data.CurrencyData;
 import com.application.fumetti.mappers.data.EditorData;
 import com.application.fumetti.mappers.data.NationData;
-import com.application.fumetti.mappers.requests.CurrenciesRequest;
-import com.application.fumetti.mappers.data.CurrencyData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
@@ -64,7 +63,7 @@ public class RoutesTest {
     @Order(1)
     public void postCurrencies() throws JsonProcessingException {
         final String BASE_PATH = "/currencies";
-        var req = new CurrenciesRequest("Euro", "€", new BigDecimal("1936.27"), new BigDecimal("1.00"));
+        var req = new CurrencyData(null, "Euro", "€", new BigDecimal("1936.27"), new BigDecimal("1.00"));
 
         var json = this.mapper.writeValueAsString(req);
         var resp = RestAssured.given()
