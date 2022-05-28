@@ -199,15 +199,7 @@ public class RoutesTest {
         // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
         for (var item : res.getData()) {
             var map = (HashMap<String, Object>) item;
-            var nestedNation = (HashMap<String, Object>) map.get("nation");
-            var nestedCurrency = (HashMap<String, Object>) nestedNation.get("currency");
-
-            var currency = new CurrencyData(Long.getLong(nestedCurrency.get("id").toString()), nestedCurrency.get("name").toString(),
-                    nestedCurrency.get("symbol").toString(), new BigDecimal(nestedCurrency.get("value_lire").toString()),
-                    new BigDecimal(nestedCurrency.get("value_euro").toString()));
-            var nation = new NationData(Long.getLong(nestedNation.get("id").toString()), nestedNation.get("name").toString(),
-                    nestedNation.get("sign").toString(), currency);
-            var converted = new EditorData(Long.getLong(map.get("id").toString()), map.get("name").toString(), map.get("hq").toString(), map.get("website").toString(), nation);
+            var converted = EditorData.map(map);
 
             Assertions.assertInstanceOf(EditorData.class, converted); // TODO: useless?
         }
