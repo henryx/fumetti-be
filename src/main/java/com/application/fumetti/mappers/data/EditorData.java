@@ -1,5 +1,6 @@
 package com.application.fumetti.mappers.data;
 
+import com.application.fumetti.db.Editors;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,5 +18,10 @@ public record EditorData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NO
 
         return new EditorData(Long.getLong(data.get("id").toString()), data.get("name").toString(),
                 data.get("hq").toString(), data.get("website").toString(), nation);
+    }
+
+    public static EditorData map(Editors map) {
+        var nation = NationData.map(map.nation);
+        return new EditorData(map.id, map.name, map.hq, map.website, nation);
     }
 }

@@ -1,5 +1,6 @@
 package com.application.fumetti.mappers.data;
 
+import com.application.fumetti.db.Nations;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,5 +17,10 @@ public record NationData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NO
 
         return new NationData(Long.getLong(data.get("id").toString()), data.get("name").toString(),
                 data.get("sign").toString(), currency);
+    }
+
+    public static NationData map(Nations map) {
+        var currency = CurrencyData.map(map.currency);
+        return new NationData(map.id, map.name, map.sign, currency);
     }
 }
