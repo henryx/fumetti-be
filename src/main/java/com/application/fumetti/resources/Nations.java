@@ -5,7 +5,6 @@ import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.NationData;
-import com.application.fumetti.mappers.data.CurrencyData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.inject.Inject;
@@ -42,11 +41,7 @@ public class Nations {
     public Response<NationData> getNations() {
         List<com.application.fumetti.db.Nations> currencies = com.application.fumetti.db.Nations.findAll().list();
 
-        var data = currencies.stream().map(ie -> {
-            var currency = new CurrencyData(ie.currency.id, ie.currency.name,
-                    ie.currency.symbol, ie.currency.valueLire, ie.currency.valueEuro);
-            return new NationData(ie.id, ie.name, ie.sign, currency);
-        }).collect(Collectors.toList());
+        var data = currencies.stream().map(NationData::map).collect(Collectors.toList());
 
         var resp = new Response<NationData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);

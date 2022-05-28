@@ -34,7 +34,7 @@ public class Currencies {
     public Response<CurrencyData> getCurrencies() {
         List<com.application.fumetti.db.Currencies> currencies = com.application.fumetti.db.Currencies.findAll().list();
 
-        var data = currencies.stream().map(ie -> new CurrencyData(ie.id, ie.name, ie.symbol, ie.valueLire, ie.valueEuro)).collect(Collectors.toList());
+        var data = currencies.stream().map(CurrencyData::map).collect(Collectors.toList());
         var resp = new Response<CurrencyData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
 

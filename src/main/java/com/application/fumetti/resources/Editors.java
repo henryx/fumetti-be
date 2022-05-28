@@ -41,10 +41,7 @@ public class Editors {
         List<com.application.fumetti.db.Editors> editors = com.application.fumetti.db.Editors.findAll().list();
 
         var data = editors.stream().map(ie -> {
-            var currency = new CurrencyData(ie.nation.currency.id, ie.nation.currency.name,
-                    ie.nation.currency.symbol, ie.nation.currency.valueLire, ie.nation.currency.valueEuro);
-            var nation = new NationData(ie.nation.id, ie.nation.name, ie.nation.sign, currency);
-            return new EditorData(ie.id, ie.name, ie.hq, ie.website, nation);
+            return EditorData.map(ie);
         }).collect(Collectors.toList());
 
         var resp = new Response<EditorData>(Operations.LOOKUP, Results.OK);
