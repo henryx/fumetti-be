@@ -24,8 +24,7 @@ public class Nations {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response postNation(NationData req) {
-        var currency = new Currencies();
-        currency.id = req.currency().id();
+        Currencies currency = Currencies.find("id_valuta", req.currency().id()).firstResult();
 
         var nation = new com.application.fumetti.db.Nations();
         nation.name = req.name();
