@@ -4,9 +4,7 @@ import com.application.fumetti.db.Nations;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.data.CurrencyData;
 import com.application.fumetti.mappers.data.EditorData;
-import com.application.fumetti.mappers.data.NationData;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -22,8 +20,7 @@ public class Editors {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response postNation(EditorData req) {
-        var nation = new Nations();
-        nation.id = req.nation().id();
+        Nations nation = Nations.find("id_nazione", req.nation().id()).firstResult();
 
         var editor = new com.application.fumetti.db.Editors();
         editor.name = req.name();
@@ -40,9 +37,7 @@ public class Editors {
     public Response<EditorData> getEditors() {
         List<com.application.fumetti.db.Editors> editors = com.application.fumetti.db.Editors.findAll().list();
 
-        var data = editors.stream().map(ie -> {
-            return EditorData.map(ie);
-        }).collect(Collectors.toList());
+        var data = editors.stream().map(EditorData::map).collect(Collectors.toList());
 
         var resp = new Response<EditorData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
