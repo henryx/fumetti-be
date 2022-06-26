@@ -13,7 +13,7 @@ public class Currencies extends PanacheEntityBase {
     @Column(name = "id_valuta", nullable = false)
     public Long id;
 
-    @Column(name = "nome", length = 20)
+    @Column(name = "nome", length = 30)
     public String name;
 
     @Column(name = "simbolo", length = 1)

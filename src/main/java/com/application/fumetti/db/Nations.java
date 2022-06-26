@@ -12,7 +12,7 @@ public class Nations extends PanacheEntityBase {
     @Column(name = "id_nazione", nullable = false)
     public Long id;
 
-    @Column(name = "nome", length = 20)
+    @Column(name = "nome", length = 30)
     public String name;
 
     @Column(name = "sigla", length = 4)

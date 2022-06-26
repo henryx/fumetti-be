@@ -12,13 +12,13 @@ public class Editors extends PanacheEntityBase {
     @Column(name = "id_casa_editrice", nullable = false)
     public Long id;
 
-    @Column(name = "nome", length = 30)
+    @Column(name = "nome", length = 45)
     public String name;
 
-    @Column(name = "sede", length = 30)
+    @Column(name = "sede", length = 45)
     public String hq;
 
-    @Column(name = "sito_web", length = 30)
+    @Column(name = "sito_web", length = 100)
     public String website;
 
     @ManyToOne(fetch = FetchType.LAZY)
