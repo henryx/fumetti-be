@@ -39,7 +39,7 @@ public class Editors {
 
         var data = editors.stream().map(EditorData::map).collect(Collectors.toList());
 
-        var resp = new Response<EditorData>(Operations.LOOKUP, Results.OK);
+        var resp = new Response<EditorData>(Operations.EDITORS, Results.OK);
         resp.setData(data);
         return resp;
     }
