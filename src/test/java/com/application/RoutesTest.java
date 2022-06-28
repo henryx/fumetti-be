@@ -204,7 +204,7 @@ public class RoutesTest {
             Assertions.assertInstanceOf(EditorData.class, converted); // TODO: useless?
         }
 
-        Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
+        Assertions.assertEquals(res.getOperation(), Operations.EDITORS.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
 }
