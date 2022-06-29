@@ -14,8 +14,8 @@ public class Index {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response index() {
-        var resp = new Response(Operations.INDEX, Results.OK);
+    public Response<Integer> index() {
+        var resp = new Response<Integer>(Operations.INDEX, Results.OK);
         resp.setMessage("Fumetti Database Backend");
         return resp;
     }

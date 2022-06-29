@@ -19,7 +19,7 @@ public class Editors {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response postNation(EditorData req) {
+    public Response<EditorData> postNation(EditorData req) {
         Nations nation = Nations.find("id_nazione", req.nation().id()).firstResult();
 
         var editor = new com.application.fumetti.db.Editors();
@@ -29,7 +29,7 @@ public class Editors {
         editor.nation = nation;
         editor.persist();
 
-        return new Response(Operations.EDITORS, Results.OK);
+        return new Response<>(Operations.EDITORS, Results.OK);
     }
 
     @GET

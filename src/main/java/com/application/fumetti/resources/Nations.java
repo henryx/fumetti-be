@@ -23,7 +23,7 @@ public class Nations {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response postNation(NationData req) {
+    public Response<NationData> postNation(NationData req) {
         Currencies currency = Currencies.find("id_valuta", req.currency().id()).firstResult();
 
         var nation = new com.application.fumetti.db.Nations();
@@ -32,7 +32,7 @@ public class Nations {
         nation.currency = currency;
         nation.persist();
 
-        return new Response(Operations.LOOKUP, Results.OK);
+        return new Response<>(Operations.LOOKUP, Results.OK);
     }
 
     @GET

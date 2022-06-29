@@ -18,7 +18,7 @@ public class Currencies {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response postCurrencies(CurrencyData req) {
+    public Response<CurrencyData> postCurrencies(CurrencyData req) {
         var currencies = new com.application.fumetti.db.Currencies();
         currencies.name = req.name();
         currencies.symbol = req.symbol();
@@ -26,7 +26,7 @@ public class Currencies {
         currencies.valueEuro = req.valueEuro();
         currencies.persist();
 
-        return new Response(Operations.LOOKUP, Results.OK);
+        return new Response<>(Operations.LOOKUP, Results.OK);
     }
 
     @GET
