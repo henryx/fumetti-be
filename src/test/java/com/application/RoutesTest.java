@@ -97,7 +97,7 @@ public class RoutesTest {
 
         // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
         for (var item : res.getData()) {
-            var map = (HashMap<String, Object>) item;
+            @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) item;
             var converted = CurrencyData.map(map);
             Assertions.assertInstanceOf(CurrencyData.class, converted); // TODO: useless?
         }
@@ -146,7 +146,7 @@ public class RoutesTest {
 
         // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
         for (var item : res.getData()) {
-            var map = (HashMap<String, Object>) item;
+            @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) item;
             var converted = NationData.map(map);
 
             Assertions.assertInstanceOf(NationData.class, converted); // TODO: useless?
@@ -198,7 +198,7 @@ public class RoutesTest {
 
         // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
         for (var item : res.getData()) {
-            var map = (HashMap<String, Object>) item;
+            @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) item;
             var converted = EditorData.map(map);
 
             Assertions.assertInstanceOf(EditorData.class, converted); // TODO: useless?
