@@ -12,7 +12,7 @@ public record NationData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NO
                          @JsonProperty("currency") CurrencyData currency) {
 
     public static NationData map(HashMap<String, Object> data) {
-        var nestedMap = (HashMap<String, Object>) data.get("currency");
+        @SuppressWarnings("unchecked") var nestedMap = (HashMap<String, Object>) data.get("currency");
         var currency = CurrencyData.map(nestedMap);
 
         return new NationData(Long.getLong(data.get("id").toString()), data.get("name").toString(),

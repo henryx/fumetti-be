@@ -13,7 +13,7 @@ public record EditorData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NO
                          @JsonProperty("nation") NationData nation) {
 
     public static EditorData map(HashMap<String, Object> data) {
-        var nestedMap = (HashMap<String, Object>) data.get("nation");
+        @SuppressWarnings("unchecked") var nestedMap = (HashMap<String, Object>) data.get("nation");
         var nation = NationData.map(nestedMap);
 
         return new EditorData(Long.getLong(data.get("id").toString()), data.get("name").toString(),
