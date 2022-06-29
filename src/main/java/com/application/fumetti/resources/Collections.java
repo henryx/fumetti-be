@@ -7,11 +7,10 @@ import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.CollectionData;
 
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/collections")
 public class Collections {
@@ -29,5 +28,17 @@ public class Collections {
         collection.persist();
 
         return new Response<>(Operations.COLLECTIONS, Results.OK);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response<CollectionData> getCollections() {
+        List<com.application.fumetti.db.Collections> currencies = com.application.fumetti.db.Collections.findAll().list();
+
+        var data = currencies.stream().map(CollectionData::map).collect(Collectors.toList());
+        var resp = new Response<CollectionData>(Operations.LOOKUP, Results.OK);
+        resp.setData(data);
+
+        return resp;
     }
 }
