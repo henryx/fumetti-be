@@ -215,7 +215,7 @@ public class RoutesTest {
         final String BASE_PATH = "/collections";
 
         var req = new CollectionData(null, "test collezione",
-                new EditorData(null, "test editore", "test sede", "https://sito",
+                new EditorData(1L, "test editore", "test sede", "https://sito",
                         new NationData(1L, "Italia", "IT",
                                 new CurrencyData(1L, "Euro", "€", new BigDecimal("1936.27"),
                                         new BigDecimal("1.00")))));
