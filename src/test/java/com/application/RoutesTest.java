@@ -3,6 +3,7 @@ package com.application;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
+import com.application.fumetti.mappers.data.CollectionData;
 import com.application.fumetti.mappers.data.CurrencyData;
 import com.application.fumetti.mappers.data.EditorData;
 import com.application.fumetti.mappers.data.NationData;
@@ -205,6 +206,33 @@ public class RoutesTest {
         }
 
         Assertions.assertEquals(res.getOperation(), Operations.EDITORS.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
+    }
+
+    @Test
+    @Order(4)
+    public void postCollections() throws JsonProcessingException {
+        final String BASE_PATH = "/collections";
+
+        var req = new CollectionData(null, "test collezione",
+                new EditorData(null, "test editore", "test sede", "https://sito",
+                        new NationData(1L, "Italia", "IT",
+                                new CurrencyData(1L, "Euro", "€", new BigDecimal("1936.27"),
+                                        new BigDecimal("1.00")))));
+
+        var json = this.mapper.writeValueAsString(req);
+        var resp = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(json)
+                .post(BASE_PATH);
+
+        resp.then().assertThat().statusCode(200);
+
+        var body = resp.body().asString();
+        var res = this.mapper.readValue(body, Response.class);
+
+        Assertions.assertEquals(Operations.COLLECTIONS.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
 }
