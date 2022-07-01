@@ -15,7 +15,7 @@ public record NationData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NO
         @SuppressWarnings("unchecked") var nestedMap = (HashMap<String, Object>) data.get("currency");
         var currency = CurrencyData.map(nestedMap);
 
-        return new NationData(Long.getLong(data.get("id").toString()), data.get("name").toString(),
+        return new NationData(Long.valueOf(data.get("id").toString()), data.get("name").toString(),
                 data.get("sign").toString(), currency);
     }
 

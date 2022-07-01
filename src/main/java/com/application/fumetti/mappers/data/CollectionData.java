@@ -14,7 +14,7 @@ public record CollectionData(@JsonProperty("id") @JsonInclude(JsonInclude.Includ
         @SuppressWarnings("unchecked") var nestedMap = (HashMap<String, Object>) data.get("editor");
         var nation = EditorData.map(nestedMap);
 
-        return new CollectionData(Long.getLong(data.get("id").toString()), data.get("name").toString(),
+        return new CollectionData(Long.valueOf(data.get("id").toString()), data.get("name").toString(),
                 nation);
     }
 

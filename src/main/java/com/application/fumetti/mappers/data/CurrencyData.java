@@ -14,7 +14,7 @@ public record CurrencyData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.
                            @JsonProperty("value_euro") BigDecimal valueEuro) {
 
     public static CurrencyData map(HashMap<String, Object> data) {
-        return new CurrencyData(Long.getLong(data.get("id").toString()), data.get("name").toString(),
+        return new CurrencyData(Long.valueOf(data.get("id").toString()), data.get("name").toString(),
                 data.get("symbol").toString(), new BigDecimal(data.get("value_lire").toString()),
                 new BigDecimal(data.get("value_euro").toString()));
     }
