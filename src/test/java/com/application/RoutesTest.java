@@ -111,9 +111,18 @@ public class RoutesTest {
     @Order(2)
     public void postNations() throws JsonProcessingException {
         final String BASE_PATH = "/nations";
+        String body;
+        Response res;
+
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get("/currencies").body().asString();
+        res = this.mapper.readValue(body, Response.class);
+        @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
+
         var req = new NationData(null, "Italia", "IT",
-                new CurrencyData(1L, "Euro", "€", new BigDecimal("1936.27"),
-                        new BigDecimal("1.00")));
+                CurrencyData.map(map));
 
         var json = this.mapper.writeValueAsString(req);
         var resp = RestAssured.given()
@@ -124,8 +133,8 @@ public class RoutesTest {
 
         resp.then().assertThat().statusCode(200);
 
-        var body = resp.body().asString();
-        var res = this.mapper.readValue(body, Response.class);
+        body = resp.body().asString();
+        res = this.mapper.readValue(body, Response.class);
 
         Assertions.assertEquals(Operations.LOOKUP.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
@@ -161,11 +170,18 @@ public class RoutesTest {
     @Order(3)
     public void postEditors() throws JsonProcessingException {
         final String BASE_PATH = "/editors";
+        String body;
+        Response res;
 
-        var req = new EditorData(null, "test editore", "test sede", "https://sito",
-                new NationData(1L, "Italia", "IT",
-                        new CurrencyData(1L, "Euro", "€", new BigDecimal("1936.27"),
-                                new BigDecimal("1.00"))));
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get("/nations").body().asString();
+        res = this.mapper.readValue(body, Response.class);
+        @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
+
+        var req = new EditorData(null, "test editore", "test sede",
+                "https://sito", NationData.map(map));
 
         var json = this.mapper.writeValueAsString(req);
         var resp = RestAssured.given()
@@ -176,8 +192,8 @@ public class RoutesTest {
 
         resp.then().assertThat().statusCode(200);
 
-        var body = resp.body().asString();
-        var res = this.mapper.readValue(body, Response.class);
+        body = resp.body().asString();
+        res = this.mapper.readValue(body, Response.class);
 
         Assertions.assertEquals(Operations.EDITORS.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
@@ -213,12 +229,17 @@ public class RoutesTest {
     @Order(4)
     public void postCollections() throws JsonProcessingException {
         final String BASE_PATH = "/collections";
+        String body;
+        Response res;
 
-        var req = new CollectionData(null, "test collezione",
-                new EditorData(1L, "test editore", "test sede", "https://sito",
-                        new NationData(1L, "Italia", "IT",
-                                new CurrencyData(1L, "Euro", "€", new BigDecimal("1936.27"),
-                                        new BigDecimal("1.00")))));
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get("/editors").body().asString();
+        res = this.mapper.readValue(body, Response.class);
+        @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
+
+        var req = new CollectionData(null, "test collana", EditorData.map(map));
 
         var json = this.mapper.writeValueAsString(req);
         var resp = RestAssured.given()
@@ -229,8 +250,8 @@ public class RoutesTest {
 
         resp.then().assertThat().statusCode(200);
 
-        var body = resp.body().asString();
-        var res = this.mapper.readValue(body, Response.class);
+        body = resp.body().asString();
+        res = this.mapper.readValue(body, Response.class);
 
         Assertions.assertEquals(Operations.COLLECTIONS.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
@@ -252,7 +273,7 @@ public class RoutesTest {
 
         // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
         for (var item : res.getData()) {
-            var map = (HashMap<String, Object>) item;
+            @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) item;
             var converted = CollectionData.map(map);
 
             Assertions.assertInstanceOf(CollectionData.class, converted); // TODO: useless?
