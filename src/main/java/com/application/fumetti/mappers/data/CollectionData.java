@@ -12,10 +12,10 @@ public record CollectionData(@JsonProperty("id") @JsonInclude(JsonInclude.Includ
 
     public static CollectionData map(HashMap<String, Object> data) {
         @SuppressWarnings("unchecked") var nestedMap = (HashMap<String, Object>) data.get("editor");
-        var nation = EditorData.map(nestedMap);
+        var editor = EditorData.map(nestedMap);
 
         return new CollectionData(Long.valueOf(data.get("id").toString()), data.get("name").toString(),
-                nation);
+                editor);
     }
 
     public static CollectionData map(Collections map) {
