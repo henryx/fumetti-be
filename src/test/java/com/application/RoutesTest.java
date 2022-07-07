@@ -3,10 +3,7 @@ package com.application;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.data.CollectionData;
-import com.application.fumetti.mappers.data.CurrencyData;
-import com.application.fumetti.mappers.data.EditorData;
-import com.application.fumetti.mappers.data.NationData;
+import com.application.fumetti.mappers.data.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
@@ -282,4 +279,38 @@ public class RoutesTest {
         Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
+
+    @Test
+    @Order(5)
+    public void postSeries() throws JsonProcessingException {
+        final String BASE_PATH = "/series";
+        String body;
+        Response res;
+
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get("/collections").body().asString();
+        res = this.mapper.readValue(body, Response.class);
+        @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
+
+        var req = new SeriesData(null, "test serie", CollectionData.map(map), "Horror",
+                "Settimanale", "In corso", "test nota");
+
+        var json = this.mapper.writeValueAsString(req);
+        var resp = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(json)
+                .post(BASE_PATH);
+
+        resp.then().assertThat().statusCode(200);
+
+        body = resp.body().asString();
+        res = this.mapper.readValue(body, Response.class);
+
+        Assertions.assertEquals(Operations.SERIES.getOperation(), res.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
+    }
+
 }
