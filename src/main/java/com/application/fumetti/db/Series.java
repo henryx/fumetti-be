@@ -1,10 +1,12 @@
 package com.application.fumetti.db;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "serie")
-public class Series {
+public class Series extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_serie", nullable = false)
@@ -29,6 +31,6 @@ public class Series {
     @JoinColumn(name = "id_genere_serie")
     public SeriesGenre genre;
 
-    @Column(name = "note", columnDefinition="TEXT")
+    @Column(name = "note", columnDefinition = "TEXT")
     public String note;
 }
