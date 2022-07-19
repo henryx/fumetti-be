@@ -25,7 +25,7 @@ public class Series {
     public Response<SeriesData> postSeries(SeriesData req) {
         Collections collection = Collections.findById(req.collection().id());
         Frequency frequency = Frequency.find("description", req.frequency().description()).firstResult();
-        Status status = Status.find("description", req.status()).firstResult();
+        Status status = Status.find("description", req.status().description()).firstResult();
         Genre genre = Genre.find("description", req.genre().description()).firstResult();
 
         var series = new com.application.fumetti.db.Series();
