@@ -36,7 +36,7 @@ public class Collections {
         List<com.application.fumetti.db.Collections> currencies = com.application.fumetti.db.Collections.findAll().list();
 
         var data = currencies.stream().map(CollectionData::map).collect(Collectors.toList());
-        var resp = new Response<CollectionData>(Operations.LOOKUP, Results.OK);
+        var resp = new Response<CollectionData>(Operations.COLLECTIONS, Results.OK);
         resp.setData(data);
 
         return resp;
