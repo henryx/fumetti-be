@@ -1,5 +1,8 @@
 package com.application.fumetti.db;
 
+import com.application.fumetti.db.lookup.series.Frequency;
+import com.application.fumetti.db.lookup.series.Genre;
+import com.application.fumetti.db.lookup.series.Status;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
@@ -21,15 +24,15 @@ public class Series extends PanacheEntityBase {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_status_serie")
-    public SeriesStatus status;
+    public Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_periodicita")
-    public SeriesFrequency frequency;
+    public Frequency frequency;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_genere_serie")
-    public SeriesGenre genre;
+    public Genre genre;
 
     @Column(name = "note", columnDefinition = "TEXT")
     public String note;

@@ -1,9 +1,9 @@
 package com.application.fumetti.resources;
 
 import com.application.fumetti.db.Collections;
-import com.application.fumetti.db.SeriesFrequency;
-import com.application.fumetti.db.SeriesGenre;
-import com.application.fumetti.db.SeriesStatus;
+import com.application.fumetti.db.lookup.series.Frequency;
+import com.application.fumetti.db.lookup.series.Genre;
+import com.application.fumetti.db.lookup.series.Status;
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
@@ -24,9 +24,9 @@ public class Series {
     @Transactional
     public Response<SeriesData> postSeries(SeriesData req) {
         Collections collection = Collections.findById(req.collection().id());
-        SeriesFrequency frequency = SeriesFrequency.find("description", req.frequency()).firstResult();
-        SeriesStatus status = SeriesStatus.find("description", req.status()).firstResult();
-        SeriesGenre genre = SeriesGenre.find("description", req.genre().description()).firstResult();
+        Frequency frequency = Frequency.find("description", req.frequency()).firstResult();
+        Status status = Status.find("description", req.status()).firstResult();
+        Genre genre = Genre.find("description", req.genre().description()).firstResult();
 
         var series = new com.application.fumetti.db.Series();
         series.name = req.name();
