@@ -276,7 +276,7 @@ public class RoutesTest {
             Assertions.assertInstanceOf(CollectionData.class, converted); // TODO: useless?
         }
 
-        Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
+        Assertions.assertEquals(res.getOperation(), Operations.COLLECTIONS.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
 
@@ -312,5 +312,4 @@ public class RoutesTest {
         Assertions.assertEquals(Operations.SERIES.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
-
 }
