@@ -10,11 +10,10 @@ import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.SeriesData;
 
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/series")
 public class Series {
@@ -40,5 +39,17 @@ public class Series {
         series.persist();
 
         return new Response<>(Operations.SERIES, Results.OK);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response<SeriesData> getCollections() {
+        List<com.application.fumetti.db.Series> currencies = com.application.fumetti.db.Series.findAll().list();
+
+        var data = currencies.stream().map(SeriesData::map).collect(Collectors.toList());
+        var resp = new Response<SeriesData>(Operations.SERIES, Results.OK);
+        resp.setData(data);
+
+        return resp;
     }
 }
