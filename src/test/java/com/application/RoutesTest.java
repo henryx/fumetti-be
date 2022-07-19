@@ -4,6 +4,7 @@ import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.*;
+import com.application.fumetti.mappers.data.lookup.series.FrequencyData;
 import com.application.fumetti.mappers.data.lookup.series.GenreData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -297,7 +298,8 @@ public class RoutesTest {
 
         var req = new SeriesData(null, "test serie", CollectionData.map(map),
                 new GenreData(null, "Horror"),
-                "Settimanale", "In corso", "test nota");
+                new FrequencyData(null, "Settimanale"),
+                "In corso", "test nota");
 
         var json = this.mapper.writeValueAsString(req);
         var resp = RestAssured.given()
