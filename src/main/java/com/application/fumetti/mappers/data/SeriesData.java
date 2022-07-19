@@ -16,7 +16,7 @@ public record SeriesData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NO
 ) {
 
     public static SeriesData map(HashMap<String, Object> data) {
-        @SuppressWarnings("unchecked") var nestedMap = (HashMap<String, Object>) data.get("editor");
+        @SuppressWarnings("unchecked") var nestedMap = (HashMap<String, Object>) data.get("collection");
         var collection = CollectionData.map(nestedMap);
 
         return new SeriesData(Long.valueOf(data.get("id").toString()), data.get("name").toString(),
