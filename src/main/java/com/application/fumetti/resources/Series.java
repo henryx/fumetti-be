@@ -43,7 +43,7 @@ public class Series {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response<SeriesData> getCollections() {
+    public Response<SeriesData> getSeries() {
         List<com.application.fumetti.db.Series> currencies = com.application.fumetti.db.Series.findAll().list();
 
         var data = currencies.stream().map(SeriesData::map).collect(Collectors.toList());
