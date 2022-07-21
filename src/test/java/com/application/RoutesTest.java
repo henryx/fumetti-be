@@ -343,4 +343,30 @@ public class RoutesTest {
         Assertions.assertEquals(res.getOperation(), Operations.SERIES.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
+
+    @Test
+    public void getSeriesFrequency() throws JsonProcessingException {
+        final String BASE_PATH = "/series/frequencies";
+
+        var resp = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get(BASE_PATH);
+
+        resp.then().assertThat().statusCode(200);
+
+        var body = resp.body().asString();
+        var res = this.mapper.readValue(body, Response.class);
+
+        // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
+        for (var item : res.getData()) {
+            @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) item;
+            var converted = FrequencyData.map(map);
+
+            Assertions.assertInstanceOf(FrequencyData.class, converted); // TODO: useless?
+        }
+
+        Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
+    }
 }
