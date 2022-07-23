@@ -9,6 +9,7 @@ import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.SeriesData;
 import com.application.fumetti.mappers.data.lookup.series.FrequencyData;
+import com.application.fumetti.mappers.data.lookup.series.GenreData;
 import com.application.fumetti.mappers.data.lookup.series.StatusData;
 
 import javax.transaction.Transactional;
@@ -76,6 +77,19 @@ public class Series {
 
         var data = currencies.stream().map(StatusData::map).collect(Collectors.toList());
         var resp = new Response<StatusData>(Operations.LOOKUP, Results.OK);
+        resp.setData(data);
+
+        return resp;
+    }
+
+    @GET
+    @Path("/genre")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response<GenreData> getSeriesGenre() {
+        List<Genre> currencies = Genre.findAll().list();
+
+        var data = currencies.stream().map(GenreData::map).collect(Collectors.toList());
+        var resp = new Response<GenreData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
 
         return resp;
