@@ -9,6 +9,7 @@ import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.SeriesData;
 import com.application.fumetti.mappers.data.lookup.series.FrequencyData;
+import com.application.fumetti.mappers.data.lookup.series.StatusData;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -62,6 +63,19 @@ public class Series {
 
         var data = currencies.stream().map(FrequencyData::map).collect(Collectors.toList());
         var resp = new Response<FrequencyData>(Operations.LOOKUP, Results.OK);
+        resp.setData(data);
+
+        return resp;
+    }
+
+    @GET
+    @Path("/status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response<StatusData> getSeriesStatus() {
+        List<Status> currencies = Status.findAll().list();
+
+        var data = currencies.stream().map(StatusData::map).collect(Collectors.toList());
+        var resp = new Response<StatusData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
 
         return resp;
