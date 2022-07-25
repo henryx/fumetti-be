@@ -5,19 +5,13 @@ import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.NationData;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/nations")
 public class Nations {
-    @Inject
-    ObjectMapper mapper;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -38,12 +32,11 @@ public class Nations {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response<NationData> getNations() {
-        List<com.application.fumetti.db.Nations> currencies = com.application.fumetti.db.Nations.findAll().list();
-
-        var data = currencies.stream().map(NationData::map).collect(Collectors.toList());
-
+        var data = com.application.fumetti.db.Nations.findAll()
+                .stream().map(e -> NationData.map((com.application.fumetti.db.Nations) e)).toList();
         var resp = new Response<NationData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
+
         return resp;
     }
 }

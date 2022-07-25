@@ -15,8 +15,6 @@ import com.application.fumetti.mappers.data.lookup.series.StatusData;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/series")
 public class Series {
@@ -47,9 +45,8 @@ public class Series {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response<SeriesData> getSeries() {
-        List<com.application.fumetti.db.Series> currencies = com.application.fumetti.db.Series.findAll().list();
-
-        var data = currencies.stream().map(SeriesData::map).collect(Collectors.toList());
+        var data = com.application.fumetti.db.Series.findAll()
+                .stream().map(e -> SeriesData.map((com.application.fumetti.db.Series) e)).toList();
         var resp = new Response<SeriesData>(Operations.SERIES, Results.OK);
         resp.setData(data);
 
@@ -60,9 +57,7 @@ public class Series {
     @Path("/frequencies")
     @Produces(MediaType.APPLICATION_JSON)
     public Response<FrequencyData> getSeriesFrequency() {
-        List<Frequency> currencies = Frequency.findAll().list();
-
-        var data = currencies.stream().map(FrequencyData::map).collect(Collectors.toList());
+        var data = Frequency.findAll().stream().map(e -> FrequencyData.map((Frequency) e)).toList();
         var resp = new Response<FrequencyData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
 
@@ -73,9 +68,7 @@ public class Series {
     @Path("/status")
     @Produces(MediaType.APPLICATION_JSON)
     public Response<StatusData> getSeriesStatus() {
-        List<Status> currencies = Status.findAll().list();
-
-        var data = currencies.stream().map(StatusData::map).collect(Collectors.toList());
+        var data = Status.findAll().stream().map(e -> StatusData.map((Status) e)).toList();
         var resp = new Response<StatusData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
 
@@ -86,9 +79,7 @@ public class Series {
     @Path("/genre")
     @Produces(MediaType.APPLICATION_JSON)
     public Response<GenreData> getSeriesGenre() {
-        List<Genre> currencies = Genre.findAll().list();
-
-        var data = currencies.stream().map(GenreData::map).collect(Collectors.toList());
+        var data = Genre.findAll().stream().map(e -> GenreData.map((Genre) e)).toList();
         var resp = new Response<GenreData>(Operations.LOOKUP, Results.OK);
         resp.setData(data);
 

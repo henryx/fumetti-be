@@ -9,8 +9,6 @@ import com.application.fumetti.mappers.data.CollectionData;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/collections")
 public class Collections {
@@ -33,9 +31,8 @@ public class Collections {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response<CollectionData> getCollections() {
-        List<com.application.fumetti.db.Collections> currencies = com.application.fumetti.db.Collections.findAll().list();
-
-        var data = currencies.stream().map(CollectionData::map).collect(Collectors.toList());
+        var data = com.application.fumetti.db.Collections.findAll()
+                .stream().map(e -> CollectionData.map((com.application.fumetti.db.Collections) e)).toList();
         var resp = new Response<CollectionData>(Operations.COLLECTIONS, Results.OK);
         resp.setData(data);
 

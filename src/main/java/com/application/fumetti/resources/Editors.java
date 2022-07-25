@@ -9,8 +9,6 @@ import com.application.fumetti.mappers.data.EditorData;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/editors")
 public class Editors {
@@ -35,12 +33,11 @@ public class Editors {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response<EditorData> getEditors() {
-        List<com.application.fumetti.db.Editors> editors = com.application.fumetti.db.Editors.findAll().list();
-
-        var data = editors.stream().map(EditorData::map).collect(Collectors.toList());
-
+        var data = com.application.fumetti.db.Editors.findAll()
+                .stream().map(e -> EditorData.map((com.application.fumetti.db.Editors) e)).toList();
         var resp = new Response<EditorData>(Operations.EDITORS, Results.OK);
         resp.setData(data);
+
         return resp;
     }
 }
