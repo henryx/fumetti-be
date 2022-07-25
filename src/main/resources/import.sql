@@ -15,3 +15,11 @@ INSERT INTO periodicita VALUES (99, 'Volume unico');
 INSERT INTO status_serie VALUES (1, 'In corso');
 INSERT INTO status_serie VALUES (2, 'Terminata');
 INSERT INTO status_serie VALUES (3, 'Interrotta');
+
+INSERT INTO stato_conservazione VALUES (1, 'Buono');
+INSERT INTO stato_conservazione VALUES (2, 'Sufficiente');
+INSERT INTO stato_conservazione VALUES (3, 'Mediocre');
+INSERT INTO stato_conservazione VALUES (4, 'Scarso');
+
+INSERT INTO rilegatura VALUES (1, 'Brossura');
+INSERT INTO rilegatura VALUES (2, 'Spillatura');
