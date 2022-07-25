@@ -4,6 +4,7 @@ import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.*;
+import com.application.fumetti.mappers.data.lookup.books.BindingsData;
 import com.application.fumetti.mappers.data.lookup.series.FrequencyData;
 import com.application.fumetti.mappers.data.lookup.series.GenreData;
 import com.application.fumetti.mappers.data.lookup.series.StatusData;
@@ -416,6 +417,32 @@ public class RoutesTest {
             var converted = GenreData.map(map);
 
             Assertions.assertInstanceOf(GenreData.class, converted); // TODO: useless?
+        }
+
+        Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
+    }
+
+    @Test
+    public void getBooksBindings() throws JsonProcessingException {
+        final String BASE_PATH = "/books/bindings";
+
+        var resp = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get(BASE_PATH);
+
+        resp.then().assertThat().statusCode(200);
+
+        var body = resp.body().asString();
+        var res = this.mapper.readValue(body, Response.class);
+
+        // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
+        for (var item : res.getData()) {
+            @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) item;
+            var converted = BindingsData.map(map);
+
+            Assertions.assertInstanceOf(BindingsData.class, converted); // TODO: useless?
         }
 
         Assertions.assertEquals(res.getOperation(), Operations.LOOKUP.getOperation());
