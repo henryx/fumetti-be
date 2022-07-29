@@ -17,6 +17,8 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 @QuarkusTest
@@ -343,6 +345,61 @@ public class RoutesTest {
         }
 
         Assertions.assertEquals(res.getOperation(), Operations.SERIES.getOperation());
+        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
+    }
+
+    @Test
+    @Order(6)
+    public void postBooks() throws JsonProcessingException {
+        final String BASE_PATH = "/books";
+        String body;
+        Response res;
+
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get("/series").then().statusCode(200).extract().body().asString();
+        res = this.mapper.readValue(body, Response.class);
+        @SuppressWarnings("unchecked") var seriesMap = (HashMap<String, Object>) res.getData().get(0);
+
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get("/currencies").then().statusCode(200).extract().body().asString();
+        res = this.mapper.readValue(body, Response.class);
+        @SuppressWarnings("unchecked") var currencyMap = (HashMap<String, Object>) res.getData().get(0);
+
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get(BASE_PATH + "/bindings").then().statusCode(200).extract().body().asString();
+        res = this.mapper.readValue(body, Response.class);
+        @SuppressWarnings("unchecked") var bindingsMap = (HashMap<String, Object>) res.getData().get(0);
+
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get(BASE_PATH + "/preservations").then().statusCode(200).extract().body().asString();
+        res = this.mapper.readValue(body, Response.class);
+        @SuppressWarnings("unchecked") var preservationMap = (HashMap<String, Object>) res.getData().get(0);
+
+        var req = new BooksData(null, SeriesData.map(seriesMap), Long.valueOf("1"),
+                LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
+                new BigDecimal("1936.27"), CurrencyData.map(currencyMap),
+                BindingsData.map(bindingsMap),
+                PreservationsData.map(preservationMap),
+                "a note");
+
+        var json = this.mapper.writeValueAsString(req);
+        body = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(json)
+                .post(BASE_PATH).then().assertThat().statusCode(200).extract().body().asString();
+
+        res = this.mapper.readValue(body, Response.class);
+
+        Assertions.assertEquals(Operations.BOOKS.getOperation(), res.getOperation());
         Assertions.assertEquals(Results.OK.getResult(), res.getResult());
     }
 
