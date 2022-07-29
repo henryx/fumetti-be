@@ -5,7 +5,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "rilegatura", schema = "public", catalog = "fumetti")
+@Table(name = "rilegatura")
 public class Bindings extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
