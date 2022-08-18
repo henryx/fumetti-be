@@ -1,4 +1,4 @@
-package com.application;
+package com.application.fumetti;
 
 import com.application.fumetti.enums.Operations;
 import com.application.fumetti.enums.Results;
