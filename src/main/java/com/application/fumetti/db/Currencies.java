@@ -22,6 +22,6 @@ public class Currencies extends PanacheEntityBase {
     @Column(name = "valore_lire", precision = 12, scale = 7)
     public BigDecimal valueLire;
 
-    @Column(name = "valore_euro", precision =12, scale = 7)
+    @Column(name = "valore_euro", precision = 12, scale = 7)
     public BigDecimal valueEuro;
 }
