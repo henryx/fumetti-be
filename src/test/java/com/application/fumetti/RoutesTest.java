@@ -231,8 +231,8 @@ public class RoutesTest {
 
     @Test
     @Order(4)
-    public void postCollections() throws JsonProcessingException {
-        final String BASE_PATH = "/collections";
+    public void postSeries() throws JsonProcessingException {
+        final String BASE_PATH = "/series";
         String body;
         Response res;
 
@@ -243,66 +243,9 @@ public class RoutesTest {
         res = this.mapper.readValue(body, Response.class);
         @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
 
-        var req = new CollectionData(null, "test collana", EditorData.map(map));
-
-        var json = this.mapper.writeValueAsString(req);
-        var resp = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .body(json)
-                .post(BASE_PATH);
-
-        resp.then().assertThat().statusCode(200);
-
-        body = resp.body().asString();
-        res = this.mapper.readValue(body, Response.class);
-
-        Assertions.assertEquals(Operations.COLLECTIONS.getOperation(), res.getOperation());
-        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
-    }
-
-    @Test
-    public void getCollections() throws JsonProcessingException {
-        final String BASE_PATH = "/collections";
-
-        var resp = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .get(BASE_PATH);
-
-        resp.then().assertThat().statusCode(200);
-
-        var body = resp.body().asString();
-        var res = this.mapper.readValue(body, Response.class);
-
-        // Because Response class doesn't have logic to map subclasses, we need to verify data with manual mapping
-        for (var item : res.getData()) {
-            @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) item;
-            var converted = CollectionData.map(map);
-
-            Assertions.assertInstanceOf(CollectionData.class, converted); // TODO: useless?
-        }
-
-        Assertions.assertEquals(res.getOperation(), Operations.COLLECTIONS.getOperation());
-        Assertions.assertEquals(Results.OK.getResult(), res.getResult());
-    }
-
-    @Test
-    @Order(5)
-    public void postSeries() throws JsonProcessingException {
-        final String BASE_PATH = "/series";
-        String body;
-        Response res;
-
-        body = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .get("/collections").body().asString();
-        res = this.mapper.readValue(body, Response.class);
-        @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
-
-        var req = new SeriesData(null, "test serie", CollectionData.map(map),
+        var req = new SeriesData(null, "test serie",
                 new GenreData(null, "Horror"),
+                EditorData.map(map),
                 new FrequencyData(null, "Settimanale"),
                 new StatusData(null, "In corso"), "test nota");
 
@@ -349,7 +292,7 @@ public class RoutesTest {
     }
 
     @Test
-    @Order(6)
+    @Order(5)
     public void postBooks() throws JsonProcessingException {
         final String BASE_PATH = "/books";
         String body;
