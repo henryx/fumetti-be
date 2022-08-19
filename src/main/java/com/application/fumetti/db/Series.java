@@ -34,6 +34,10 @@ public class Series extends PanacheEntityBase {
     @JoinColumn(name = "id_genere_serie")
     public Genre genre;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_casa_editrice")
+    public Editors editor;
+
     @Column(name = "note", columnDefinition = "TEXT")
     public String note;
 }
