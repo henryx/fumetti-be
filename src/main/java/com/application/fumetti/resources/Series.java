@@ -1,6 +1,6 @@
 package com.application.fumetti.resources;
 
-import com.application.fumetti.db.Collections;
+import com.application.fumetti.db.Editors;
 import com.application.fumetti.db.lookup.series.Frequency;
 import com.application.fumetti.db.lookup.series.Genre;
 import com.application.fumetti.db.lookup.series.Status;
@@ -24,7 +24,7 @@ public class Series {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response<SeriesData> postSeries(SeriesData req) {
-        Collections collection = Collections.findById(req.collection().id());
+        Editors editor = Editors.findById(req.editor().id());
         Frequency frequency = Frequency.find("description", req.frequency().description()).firstResult();
         Status status = Status.find("description", req.status().description()).firstResult();
         Genre genre = Genre.find("description", req.genre().description()).firstResult();
@@ -33,7 +33,7 @@ public class Series {
         series.name = req.name();
         series.note = req.note();
 
-        series.collection = collection;
+        series.editor = editor;
         series.frequency = frequency;
         series.status = status;
         series.genre = genre;
