@@ -19,10 +19,6 @@ public class Series extends PanacheEntityBase {
     public String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_collana")
-    public Collections collection;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_status_serie")
     public Status status;
 
