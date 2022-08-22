@@ -24,7 +24,7 @@ public class Series {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response<SeriesData> postSeries(SeriesData req) {
-        Editors editor = Editors.findById(req.editor().id());
+        Editors editor = Editors.find("nome", req.editor().name()).firstResult();
         Frequency frequency = Frequency.find("description", req.frequency().description()).firstResult();
         Status status = Status.find("description", req.status().description()).firstResult();
         Genre genre = Genre.find("description", req.genre().description()).firstResult();
