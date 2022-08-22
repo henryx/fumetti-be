@@ -4,6 +4,7 @@ INSERT INTO genere_serie VALUES (3, 'Sentimentale');
 INSERT INTO genere_serie VALUES (4, 'Comico');
 INSERT INTO genere_serie VALUES (5, 'Avventura');
 INSERT INTO genere_serie VALUES (6, 'Sportivo');
+INSERT INTO genere_serie VALUES (7, 'Supereroi');
 
 INSERT INTO periodicita VALUES (1, 'Settimanale');
 INSERT INTO periodicita VALUES (2, 'Quindicinale');
