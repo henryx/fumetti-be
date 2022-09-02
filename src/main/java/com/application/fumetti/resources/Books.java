@@ -24,7 +24,7 @@ public class Books {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response<BooksData> postCollections(BooksData req) {
+    public Response<BooksData> postBooks(BooksData req) {
         Series series = Series.findById(req.series().id());
         Currencies currency = Currencies.findById(req.currency().id());
         Bindings binding = Bindings.findById(req.binding().id());
