@@ -67,7 +67,7 @@ public class RoutesTest {
     @Test
     @Order(1)
     public void postCurrencies() throws JsonProcessingException {
-        final String BASE_PATH = "/currencies";
+        final String BASE_PATH = "/api/v1/currencies";
         var req = new CurrencyData(null, "Euro", "€", new BigDecimal("1936.27"), new BigDecimal("1.00"));
 
         var json = this.mapper.writeValueAsString(req);
@@ -88,7 +88,7 @@ public class RoutesTest {
 
     @Test
     public void getCurrencies() throws JsonProcessingException {
-        final String BASE_PATH = "/currencies";
+        final String BASE_PATH = "/api/v1/currencies";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -114,14 +114,14 @@ public class RoutesTest {
     @Test
     @Order(2)
     public void postNations() throws JsonProcessingException {
-        final String BASE_PATH = "/nations";
+        final String BASE_PATH = "/api/v1/nations";
         String body;
         Response res;
 
         body = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .get("/currencies").body().asString();
+                .get("/api/v1/currencies").body().asString();
         res = this.mapper.readValue(body, Response.class);
         @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
 
@@ -146,7 +146,7 @@ public class RoutesTest {
 
     @Test
     public void getNations() throws JsonProcessingException {
-        final String BASE_PATH = "/nations";
+        final String BASE_PATH = "/api/v1/nations";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -173,14 +173,14 @@ public class RoutesTest {
     @Test
     @Order(3)
     public void postEditors() throws JsonProcessingException {
-        final String BASE_PATH = "/editors";
+        final String BASE_PATH = "/api/v1/editors";
         String body;
         Response res;
 
         body = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .get("/nations").body().asString();
+                .get("/api/v1/nations").body().asString();
         res = this.mapper.readValue(body, Response.class);
         @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
 
@@ -205,7 +205,7 @@ public class RoutesTest {
 
     @Test
     public void getEditors() throws JsonProcessingException {
-        final String BASE_PATH = "/editors";
+        final String BASE_PATH = "/api/v1/editors";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -232,14 +232,14 @@ public class RoutesTest {
     @Test
     @Order(4)
     public void postSeries() throws JsonProcessingException {
-        final String BASE_PATH = "/series";
+        final String BASE_PATH = "/api/v1/series";
         String body;
         Response res;
 
         body = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .get("/editors").body().asString();
+                .get("/api/v1/editors").body().asString();
         res = this.mapper.readValue(body, Response.class);
         @SuppressWarnings("unchecked") var map = (HashMap<String, Object>) res.getData().get(0);
 
@@ -267,7 +267,7 @@ public class RoutesTest {
 
     @Test
     public void getSeries() throws JsonProcessingException {
-        final String BASE_PATH = "/series";
+        final String BASE_PATH = "/api/v1/series";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -294,21 +294,21 @@ public class RoutesTest {
     @Test
     @Order(5)
     public void postBooks() throws JsonProcessingException {
-        final String BASE_PATH = "/books";
+        final String BASE_PATH = "/api/v1/books";
         String body;
         Response res;
 
         body = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .get("/series").then().statusCode(200).extract().body().asString();
+                .get("/api/v1/series").then().statusCode(200).extract().body().asString();
         res = this.mapper.readValue(body, Response.class);
         @SuppressWarnings("unchecked") var seriesMap = (HashMap<String, Object>) res.getData().get(0);
 
         body = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .get("/currencies").then().statusCode(200).extract().body().asString();
+                .get("/api/v1/currencies").then().statusCode(200).extract().body().asString();
         res = this.mapper.readValue(body, Response.class);
         @SuppressWarnings("unchecked") var currencyMap = (HashMap<String, Object>) res.getData().get(0);
 
@@ -348,7 +348,7 @@ public class RoutesTest {
 
     @Test
     public void getSeriesFrequency() throws JsonProcessingException {
-        final String BASE_PATH = "/series/frequencies";
+        final String BASE_PATH = "/api/v1/series/frequencies";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -374,7 +374,7 @@ public class RoutesTest {
 
     @Test
     public void getSeriesStatus() throws JsonProcessingException {
-        final String BASE_PATH = "/series/status";
+        final String BASE_PATH = "/api/v1/series/status";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -400,7 +400,7 @@ public class RoutesTest {
 
     @Test
     public void getSeriesGenre() throws JsonProcessingException {
-        final String BASE_PATH = "/series/genre";
+        final String BASE_PATH = "/api/v1/series/genre";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -426,7 +426,7 @@ public class RoutesTest {
 
     @Test
     public void getBooksBindings() throws JsonProcessingException {
-        final String BASE_PATH = "/books/bindings";
+        final String BASE_PATH = "/api/v1/books/bindings";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -452,7 +452,7 @@ public class RoutesTest {
 
     @Test
     public void getBooksPreservations() throws JsonProcessingException {
-        final String BASE_PATH = "/books/preservations";
+        final String BASE_PATH = "/api/v1/books/preservations";
 
         var resp = RestAssured.given()
                 .contentType(ContentType.JSON)
