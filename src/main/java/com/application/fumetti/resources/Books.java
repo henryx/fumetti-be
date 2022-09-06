@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Path("/books")
+@Path("/api/v1/books")
 public class Books {
 
     @POST

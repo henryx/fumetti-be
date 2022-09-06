@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-@Path("/currencies")
+@Path("/api/v1/currencies")
 public class Currencies {
 
     @POST

@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-@Path("/nations")
+@Path("/api/v1/nations")
 public class Nations {
 
     @POST

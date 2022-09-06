@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-@Path("/series")
+@Path("/api/v1/series")
 public class Series {
 
     @POST

@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-@Path("/editors")
+@Path("/api/v1/editors")
 public class Editors {
 
     @POST
